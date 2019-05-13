@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -19,21 +20,30 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
-
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+
 import utils.MakeExtentReport;
-import utils.Reports_utils;
+
+
+
+
+
 
 public class GenericMethods extends MakeExtentReport {
 	public static WebDriver driver;
 	public static ChromeOptions options;
 	public static Properties prop;
 	static FileInputStream ip;
+	public static JavascriptExecutor js;
 
 	// ****************************************GENERICMETHODS**********************//
 	/*
@@ -78,12 +88,12 @@ public class GenericMethods extends MakeExtentReport {
 
 		try {
 			// Wait till the WebElement is Displayed
-			new WebDriverWait(driver,15).until(ExpectedConditions.visibilityOf(element));
-			JavascriptExecutor js = ((JavascriptExecutor) driver);
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
+			js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='3px solid red'", element);
 			}
-			Actions act=new Actions(driver);
+			Actions act = new Actions(driver);
 			act.moveToElement(element).build().perform();
 			js.executeScript("arguments[0].click();", element);
 		} catch (Exception e) {
@@ -136,23 +146,59 @@ public class GenericMethods extends MakeExtentReport {
 	// ********************************************************************************//
 	public static void lanunchBowser() {
 		load_properties();
+		String browser = prop.getProperty("browsername");
+		String headless = prop.getProperty("HeadlessMode");
+		String imageDisable = prop.getProperty("DisableImage");
 		String browsername = prop.getProperty("browsername");
 		String url = prop.getProperty("URL");
-		if (browsername.equalsIgnoreCase("chrome")) {
-			options =new ChromeOptions();
-			options.addArguments("window-size=1400,800");
-			//options.addArguments("--incognito");
-			//options.addArguments("headless");
-			System.setProperty("webdriver.chrome.driver",
-					System.getProperty("user.dir") + prop.getProperty("cDriverpah"));
-			driver = new ChromeDriver(options);
-		} else if (browsername.equalsIgnoreCase("firefox")) {
+		if (browser.equalsIgnoreCase("chrome") || browser.toUpperCase().contains("CHROME")) {
+			try {
 
-			driver = new FirefoxDriver();
-		} else
-			driver = new FirefoxDriver();
+				System.setProperty("webdriver.chrome.driver", getPath(browser));
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--incognito");
+
+				if (imageDisable.equalsIgnoreCase("yes")) {
+					cH_disableImg(options);
+				}
+				if (headless.equalsIgnoreCase("yes")) {
+					cH_headless(options);
+				}
+				DesiredCapabilities capabilites = DesiredCapabilities.chrome();
+				capabilites.setCapability(ChromeOptions.CAPABILITY, options);
+				driver = new ChromeDriver(options);
+
+				logStatus("pass","Chrome drive launched with headless mode = " + headless.toUpperCase()
+						+ ", Image Disable mode = " + imageDisable.toUpperCase());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (browser.equalsIgnoreCase("FF") || browser.toUpperCase().contains("FIRE")) {
+			try {
+
+				System.setProperty("webdriver.gecko.driver", getPath(browser));
+				FirefoxOptions FFoptions = new FirefoxOptions();
+				if (imageDisable.equalsIgnoreCase("yes")) {
+					fF_disableImg(FFoptions);
+				}
+				if (headless.equalsIgnoreCase("yes")) {
+					fF_headless(FFoptions);
+				}
+
+				driver = new FirefoxDriver(FFoptions);
+
+				logStatus("pass","FF drive launched with headless mode = " + headless.toUpperCase()
+						+ ", Image Disable mode = " + imageDisable.toUpperCase());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				//LogStatus.fail(e);
+			}
+		}
+
 		driver.manage().window().maximize();
-		new WebDriverWait(driver, 5);
+		new WebDriverWait(driver, 5).until(ExpectedConditions.titleContains(driver.getTitle()));
 		driver.get(url);
 	}
 
@@ -192,7 +238,7 @@ public class GenericMethods extends MakeExtentReport {
 		try {
 			// Wait till the WebElement is Displayed
 			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(element));
-			JavascriptExecutor js = ((JavascriptExecutor) driver);
+			 js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='3px solid red'", element);
 			}
@@ -428,7 +474,7 @@ public class GenericMethods extends MakeExtentReport {
 	// ********************************************************************************//
 	public static void verifyElementText(String exp_text, WebElement element) {
 		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
-		JavascriptExecutor js = ((JavascriptExecutor) driver);
+		 js = ((JavascriptExecutor) driver);
 		for (int i = 0; i <= 3; i++) {
 			js.executeScript("arguments[0].style.border='2px solid red'", element);
 		}
@@ -457,8 +503,8 @@ public class GenericMethods extends MakeExtentReport {
 	public static boolean hoverAndClick_boolean(WebElement element) {
 		boolean flag = false;
 		try {
-			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(element));
-			JavascriptExecutor js = ((JavascriptExecutor) driver);
+			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+			 js= ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='2px solid red'", element);
 			}
@@ -492,4 +538,105 @@ public class GenericMethods extends MakeExtentReport {
 		 new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(e));
 	}
 	//*********************************************************************************************//
+	/*
+	 * Method Name 		:= getPath()
+	 * 
+	 * Input Parameter 	:= browser
+	 * 
+	 * OutPut Parameter := driverPath
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
+	public static String getPath(String browser) {
+		String OS = System.getProperty("os.name");
+		String driverPath = null;
+		if (OS.toUpperCase().contains("WINDOWS")) {
+			if (browser.toUpperCase().contains("CHROME")) {
+				driverPath = System.getProperty("user.dir") + "\\Drivers\\chromedriver.exe";
+			} else if (browser.toUpperCase().contains("FF") || browser.toUpperCase().contains("FIRE")) {
+				driverPath = System.getProperty("user.dir") +"\\Drivers\\geckodriver.exe";
+
+			}
+		} else if (OS.toUpperCase().contains("MAC")) {
+			if (browser.toUpperCase().contains("CHROME")) {
+				driverPath = System.getProperty("user.dir") + "//Drivers//chromedriver";
+			} else if (browser.toUpperCase().contains("FF") || browser.toUpperCase().contains("FIRE")) {
+				driverPath = System.getProperty("user.dir") +"//Drivers//geckodriver";
+			}
+		}
+		return driverPath;
+	}
+	//*************************************************************************************************//
+	//disables images in chrome browser
+		public  static void cH_disableImg(ChromeOptions options)
+		{
+			HashMap<String, Object> images=new HashMap<String, Object>();
+			images.put("images", 2);
+			HashMap<String, Object> pref=new HashMap<String, Object>();
+			pref.put("profile.default_content_setting_values", images);
+			options.setExperimentalOption("prefs", pref);
+		}
+	//*******************************************************************************************************//	
+		//disables images in Firefox browser
+		public static void fF_disableImg(FirefoxOptions options)
+		{
+			FirefoxProfile profile=new FirefoxProfile();
+			profile.setPreference("permissions.default.image", 2);
+			options.setProfile(profile);
+			options.setCapability(FirefoxDriver.PROFILE, profile);
+		}
+	//****************************************************************************************************//
+		//Configures chrome to run in headless mode
+		public static void cH_headless(ChromeOptions options)
+		{
+			options.addArguments("window-size=1400,800");
+			options.addArguments("headless");
+		}
+	//************************************************************************************************************//	
+		//Configures FireFox to run in headless mode
+		public static void fF_headless(FirefoxOptions options)
+		{
+			FirefoxBinary firefoxBinary=new FirefoxBinary();
+			firefoxBinary.addCommandLineOptions("--headless");
+			options.setBinary(firefoxBinary);
+		}
+	//*************************************************************************************************************//
+		//Scrolls till the bottom of page
+		public static void toBottomOfPage()
+		{
+			try {
+			    long Height =Long.parseLong(((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
+
+			    while (true) {
+			        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+			        Thread.sleep(500);
+
+			        long newHeight = Long.parseLong(((JavascriptExecutor)driver).executeScript("return document.body.scrollHeight").toString());
+			        if (newHeight == Height) {
+			            break;
+			        }
+			        Height = newHeight;
+			    }
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+		}
+	//****************************************************************************************************************//	
+		//Scrolls to top of page
+		public static void toUP()
+		{
+			    
+			     ((JavascriptExecutor) driver).executeScript("window.scrollTo(document.body.scrollHeight,0);");
+		
+		}
+	//****************************************************************************************************************//	
+		//Scrolls till element view
+		public static void toElement(WebElement element)
+		{
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+		}
+	//****************************************************************************************************************//	
 }
