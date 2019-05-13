@@ -557,86 +557,172 @@ public class GenericMethods extends MakeExtentReport {
 			if (browser.toUpperCase().contains("CHROME")) {
 				driverPath = System.getProperty("user.dir") + "\\Drivers\\chromedriver.exe";
 			} else if (browser.toUpperCase().contains("FF") || browser.toUpperCase().contains("FIRE")) {
-				driverPath = System.getProperty("user.dir") +"\\Drivers\\geckodriver.exe";
+				driverPath = System.getProperty("user.dir") + "\\Drivers\\geckodriver.exe";
 
 			}
 		} else if (OS.toUpperCase().contains("MAC")) {
 			if (browser.toUpperCase().contains("CHROME")) {
 				driverPath = System.getProperty("user.dir") + "//Drivers//chromedriver";
 			} else if (browser.toUpperCase().contains("FF") || browser.toUpperCase().contains("FIRE")) {
-				driverPath = System.getProperty("user.dir") +"//Drivers//geckodriver";
+				driverPath = System.getProperty("user.dir") + "//Drivers//geckodriver";
 			}
 		}
 		return driverPath;
 	}
 	//*************************************************************************************************//
 	//disables images in chrome browser
-		public  static void cH_disableImg(ChromeOptions options)
-		{
-			HashMap<String, Object> images=new HashMap<String, Object>();
-			images.put("images", 2);
-			HashMap<String, Object> pref=new HashMap<String, Object>();
-			pref.put("profile.default_content_setting_values", images);
-			options.setExperimentalOption("prefs", pref);
-		}
+	/*
+	 * Method Name 		:= cH_disableImg()
+	 * 
+	 * Input Parameter 	:= ChromeOptions options
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
+
+	public static void cH_disableImg(ChromeOptions options) {
+		HashMap<String, Object> images = new HashMap<String, Object>();
+		images.put("images", 2);
+		HashMap<String, Object> pref = new HashMap<String, Object>();
+		pref.put("profile.default_content_setting_values", images);
+		options.setExperimentalOption("prefs", pref);
+	}
 	//*******************************************************************************************************//	
-		//disables images in Firefox browser
-		public static void fF_disableImg(FirefoxOptions options)
-		{
-			FirefoxProfile profile=new FirefoxProfile();
-			profile.setPreference("permissions.default.image", 2);
-			options.setProfile(profile);
-			options.setCapability(FirefoxDriver.PROFILE, profile);
-		}
+	//disables images in Firefox browser
+	/*
+	 * Method Name 		:= fF_disableImg()
+	 * 
+	 * Input Parameter 	:= FirefoxOptions options
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
+
+	public static void fF_disableImg(FirefoxOptions options) {
+		FirefoxProfile profile = new FirefoxProfile();
+		profile.setPreference("permissions.default.image", 2);
+		options.setProfile(profile);
+		options.setCapability(FirefoxDriver.PROFILE, profile);
+	}
 	//****************************************************************************************************//
-		//Configures chrome to run in headless mode
-		public static void cH_headless(ChromeOptions options)
-		{
-			options.addArguments("window-size=1400,800");
-			options.addArguments("headless");
-		}
+	//Configures chrome to run in headless mode
+	/*
+	 * Method Name 		:= cH_headless()
+	 * 
+	 * Input Parameter 	:= ChromeOptions options
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
+
+	public static void cH_headless(ChromeOptions options) {
+		options.addArguments("window-size=1400,800");
+		options.addArguments("headless");
+	}
 	//************************************************************************************************************//	
-		//Configures FireFox to run in headless mode
-		public static void fF_headless(FirefoxOptions options)
-		{
-			FirefoxBinary firefoxBinary=new FirefoxBinary();
-			firefoxBinary.addCommandLineOptions("--headless");
-			options.setBinary(firefoxBinary);
-		}
+	//Configures FireFox to run in headless mode
+	/*
+	 * Method Name 		:= fF_headless()
+	 * 
+	 * Input Parameter 	:= FirefoxOptions options
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
+
+	public static void fF_headless(FirefoxOptions options) {
+		FirefoxBinary firefoxBinary = new FirefoxBinary();
+		firefoxBinary.addCommandLineOptions("--headless");
+		options.setBinary(firefoxBinary);
+	}
 	//*************************************************************************************************************//
-		//Scrolls till the bottom of page
-		public static void toBottomOfPage()
-		{
-			try {
-			    long Height =Long.parseLong(((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
+	//Scrolls till the bottom of page
+	/*
+	 * Method Name 		:= toBottomOfPage()
+	 * 
+	 * Input Parameter 	:= NA 
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
 
-			    while (true) {
-			        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
-			        Thread.sleep(500);
+	public static void toBottomOfPage() {
+		try {
+			long Height = Long.parseLong(
+					((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
 
-			        long newHeight = Long.parseLong(((JavascriptExecutor)driver).executeScript("return document.body.scrollHeight").toString());
-			        if (newHeight == Height) {
-			            break;
-			        }
-			        Height = newHeight;
-			    }
-			} catch (Exception e) {
-			    e.printStackTrace();
+			while (true) {
+				((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+				Thread.sleep(500);
+
+				long newHeight = Long.parseLong(
+						((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
+				if (newHeight == Height) {
+					break;
+				}
+				Height = newHeight;
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 	//****************************************************************************************************************//	
-		//Scrolls to top of page
-		public static void toUP()
-		{
-			    
-			     ((JavascriptExecutor) driver).executeScript("window.scrollTo(document.body.scrollHeight,0);");
-		
-		}
+	//Scrolls to top of page
+	/*
+	 * Method Name 		:= toUP()
+	 * 
+	 * Input Parameter 	:= NA 
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ***************************************************************************************//
+
+	public static void toUP() {
+
+		((JavascriptExecutor) driver).executeScript("window.scrollTo(document.body.scrollHeight,0);");
+
+	}
 	//****************************************************************************************************************//	
-		//Scrolls till element view
-		public static void toElement(WebElement element)
-		{
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-		}
+	//Scrolls till element view
+	/*
+	 * Method Name 		:= toElement()
+	 * 
+	 * Input Parameter 	:= WebElement element 
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ************************************************************************************************************//
+
+	public static void toElement(WebElement element) {
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+	}
 	//****************************************************************************************************************//	
 }
