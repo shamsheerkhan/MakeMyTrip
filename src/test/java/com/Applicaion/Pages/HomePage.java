@@ -264,5 +264,17 @@ public class HomePage extends GenericMethods{
 
 	}
 	//************************************************************************************************//
-	
+	/*
+	 * Method Name :=clickSearch 
+	 * Input_Parameters := NA 
+	 * OutPut_Parameters:= NA
+	 * Designer := SHAMSHEER KHAN 
+	 * Sprint := #
+	 */
+	// ***********************************************************************************************//
+	public FlightResultPage clickSearch(){
+		hoverAndClick(btn_search);
+		return new FlightResultPage();
+	}
+	//****************************************************************************************************//	
 }

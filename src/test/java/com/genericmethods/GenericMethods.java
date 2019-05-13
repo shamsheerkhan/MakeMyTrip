@@ -156,7 +156,7 @@ public class GenericMethods extends MakeExtentReport {
 
 				System.setProperty("webdriver.chrome.driver", getPath(browser));
 				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--incognito");
+				//options.addArguments("--incognito");
 
 				if (imageDisable.equalsIgnoreCase("yes")) {
 					cH_disableImg(options);
@@ -193,7 +193,7 @@ public class GenericMethods extends MakeExtentReport {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				//LogStatus.fail(e);
+				logStatus("fail","Unable to launch the browser"+e.getMessage());
 			}
 		}
 
@@ -237,7 +237,7 @@ public class GenericMethods extends MakeExtentReport {
 	public static void hoverAnElement(WebElement element) {
 		try {
 			// Wait till the WebElement is Displayed
-			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(element));
+			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
 			 js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='3px solid red'", element);

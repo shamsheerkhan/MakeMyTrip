@@ -4,6 +4,7 @@ package com.stepdefinitions;
 
 import org.junit.Assert;
 
+import com.Applicaion.Pages.FlightResultPage;
 import com.Applicaion.Pages.HomePage;
 import com.genericmethods.GenericMethods;
 
@@ -13,12 +14,13 @@ import cucumber.api.java.en.Then;
 
 public class FlightResultTest extends GenericMethods {
 	public static HomePage home;
+	public static FlightResultPage flight;
 
 	@Given("^user is on home page$")
 	public void user_is_on_home_page() {
 		lanunchBowser();
 		home = new HomePage();
-		//home.login_account();
+		// home.login_account();
 	}
 
 	@Then("^user has to click on flights menu$")
@@ -48,7 +50,7 @@ public class FlightResultTest extends GenericMethods {
 
 	@And("^user able click Search$")
 	public void user_able_click_Search() {
-		hoverAndClick(home.btn_search);
+		flight=home.clickSearch();
 	}
 
 }
