@@ -50,7 +50,23 @@ public class FlightResultTest extends GenericMethods {
 
 	@And("^user able click Search$")
 	public void user_able_click_Search() {
-		flight=home.clickSearch();
+		flight = home.clickSearch();
 	}
 
+	@Then("^user able see all Departure and Return flight Records$")
+	public void user_able_see_all_Departure_and_Return_flight_Records() {
+		flight.print_flight_Records();
+		
+		
+	}
+
+	@Then("^user select the Non Stop service and able see all Departure and Return flight Records$")
+	public void user_select_the_Non_Stop_service_and_able_see_all_Departure_and_Return_flight_Records() {
+		flight.print_NonStop_flight_Records();
+	}
+
+	@Then("^user select the One Stop service and able see all Departure and Return flight Records$")
+	public void user_select_the_One_Stop_service_and_able_see_all_Departure_and_Return_flight_Records() {
+		flight.print_1Stop_flight_Records();
+	}
 }

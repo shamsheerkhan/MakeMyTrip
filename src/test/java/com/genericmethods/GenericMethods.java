@@ -34,16 +34,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.MakeExtentReport;
 
 
-
-
-
-
 public class GenericMethods extends MakeExtentReport {
 	public static WebDriver driver;
 	public static ChromeOptions options;
 	public static Properties prop;
 	static FileInputStream ip;
 	public static JavascriptExecutor js;
+	public static String OS = System.getProperty("os.name");
 
 	// ****************************************GENERICMETHODS**********************//
 	/*
@@ -56,12 +53,21 @@ public class GenericMethods extends MakeExtentReport {
 	// *********************************************************************************//
 	public static void load_properties() {
 		prop = new Properties();
-
+		
+		if (OS.toUpperCase().contains("WINDOWS")) {
 		try {
 			ip = new FileInputStream(System.getProperty("user.dir") + "\\config\\configuration.properties");
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();
+		}}
+		else if (OS.toUpperCase().contains("MAC")) {
+			try {
+				ip = new FileInputStream(System.getProperty("user.dir") + "//config//configuration.properties");
+			} catch (FileNotFoundException e) {
+
+				e.printStackTrace();
+			}
 		}
 		try {
 			prop.load(ip);
@@ -88,7 +94,7 @@ public class GenericMethods extends MakeExtentReport {
 
 		try {
 			// Wait till the WebElement is Displayed
-			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
+			Explicitwait(5, element);
 			js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='3px solid red'", element);
@@ -120,7 +126,7 @@ public class GenericMethods extends MakeExtentReport {
 
 		try {
 			// Wait till the WebElement is Displayed
-			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+			Explicitwait(5, element);
 			Actions act=new Actions(driver);
 			act.moveToElement(element).perform();
 			
@@ -156,7 +162,7 @@ public class GenericMethods extends MakeExtentReport {
 
 				System.setProperty("webdriver.chrome.driver", getPath(browser));
 				ChromeOptions options = new ChromeOptions();
-				//options.addArguments("--incognito");
+				options.addArguments("--incognito");
 
 				if (imageDisable.equalsIgnoreCase("yes")) {
 					cH_disableImg(options);
@@ -198,8 +204,10 @@ public class GenericMethods extends MakeExtentReport {
 		}
 
 		driver.manage().window().maximize();
-		new WebDriverWait(driver, 5).until(ExpectedConditions.titleContains(driver.getTitle()));
 		driver.get(url);
+		driver.manage().deleteAllCookies();
+		new WebDriverWait(driver, 5).until(ExpectedConditions.titleContains(driver.getTitle()));
+		
 	}
 
 	// *******************************************************************************//
@@ -237,7 +245,7 @@ public class GenericMethods extends MakeExtentReport {
 	public static void hoverAnElement(WebElement element) {
 		try {
 			// Wait till the WebElement is Displayed
-			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+			Explicitwait(5, element);
 			 js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='3px solid red'", element);
@@ -473,7 +481,7 @@ public class GenericMethods extends MakeExtentReport {
 	 */
 	// ********************************************************************************//
 	public static void verifyElementText(String exp_text, WebElement element) {
-		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
+		Explicitwait(5, element);
 		 js = ((JavascriptExecutor) driver);
 		for (int i = 0; i <= 3; i++) {
 			js.executeScript("arguments[0].style.border='2px solid red'", element);
@@ -503,7 +511,7 @@ public class GenericMethods extends MakeExtentReport {
 	public static boolean hoverAndClick_boolean(WebElement element) {
 		boolean flag = false;
 		try {
-			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+			Explicitwait(5, element);
 			 js= ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='2px solid red'", element);
@@ -551,7 +559,7 @@ public class GenericMethods extends MakeExtentReport {
 	 */
 	// ***************************************************************************************//
 	public static String getPath(String browser) {
-		String OS = System.getProperty("os.name");
+		
 		String driverPath = null;
 		if (OS.toUpperCase().contains("WINDOWS")) {
 			if (browser.toUpperCase().contains("CHROME")) {
