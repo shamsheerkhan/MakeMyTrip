@@ -22,6 +22,7 @@ import cucumber.api.junit.Cucumber;
 		glue= {"com.stepdefinitions"},
 		//plugin= {"com.cucumber.listener.ExtentCucumberFormatter:"},
 		monochrome=true
+		,dryRun=false
 		
 		
 		)

@@ -4,36 +4,42 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class test {
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
-	public static void main(String[] args) {
-		Date date1 = new Date();
-		Calendar c = Calendar.getInstance();
-		c.setTime(date1);
+import com.Applicaion.Pages.FlightResultPage;
+import com.Applicaion.Pages.HomePage;
 
-		c.add(Calendar.DATE, 25); // Adding 7 Days in current date. this is arrival date.
-
-		Date date2 = c.getTime();
-		System.out.println(date1+" "+date2);
-		SimpleDateFormat formatNowDay = new SimpleDateFormat("dd");
-		SimpleDateFormat formatNowMonth = new SimpleDateFormat("MMMM");
-		SimpleDateFormat formatNowYear = new SimpleDateFormat("YYYY");
-		String Day1 = formatNowDay.format(date1);
-		String Month1 = formatNowMonth.format(date1);
-		String Year1 = formatNowYear.format(date1);
-		if (Day1.startsWith("0")) {
-			Day1 = Day1.substring(1);
-		}
-		System.out.println(Day1+" "+Month1+" "+Year1);
-		
-		System.out.println("*************************************");
-		String Day2 = formatNowDay.format(date2);
-		String Month2 = formatNowMonth.format(date2);
-		String Year2 = formatNowYear.format(date2);
-		if (Day2.startsWith("0")) {
-			Day2 = Day2.substring(1);
-		}
-		System.out.println(Day2+" "+Month2+" "+Year2);
+public class test extends GenericMethods{
+	public static HomePage home;
+	public static FlightResultPage flight;
+public static void main(String[] args) {
+	
+	lanunchBowser();
+	home = new HomePage();
+	home.select_MMT_Menu();
+	home.select_Trip();
+	Assert.assertTrue(home.enterFromCity());
+	Assert.assertTrue(home.EnterToCity());
+	Assert.assertTrue(home.DatePicker());
+	flight = home.clickSearch();
+	try {
+		Thread.sleep(3000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	toBottomOfPage();
+	toUP();
+	hoverAndClick(flight.departures_flights_list.get(3));
+	hoverAndClick(flight.Return_flights_list.get(5));
+	//span[contains(text(),'Rs')]
+	WebElement e2=driver.findElement(By.xpath("//span[@class='splitVw-total-fare']/span"));
+	if(e2.isDisplayed()){
+		System.out.println(e2.getText());
+		System.out.println(ConvertToIntPrice(e2.getText()));
+	}
 	}
 
 }

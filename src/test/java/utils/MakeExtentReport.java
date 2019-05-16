@@ -21,6 +21,7 @@ public class MakeExtentReport {
 public static ExtentReports reports;
 public static ExtentTest test;
 static String temppath="";
+public static String OS = System.getProperty("os.name");
 	// *******************************************************************************//
 	/*
 	 * Method Name := captureScreenShot()
@@ -36,7 +37,7 @@ static String temppath="";
 	// ********************************************************************************//
 	public static String captureScreenShot() {
 		// Take screenshot and store as a file format
-
+		String Dest=null;
 		try {
 			String ScreenshotName;
 			DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
@@ -47,8 +48,13 @@ static String temppath="";
 			ScreenshotName = DateTimeStamp.toString();
 			TakesScreenshot ts = (TakesScreenshot) GenericMethods.driver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
-			String Dest = System.getProperty("user.dir") + "\\screenshots\\" + ScreenshotName + "\\"
+			if (OS.toUpperCase().contains("WINDOWS")) {
+			Dest= System.getProperty("user.dir") + "\\screenshots\\" + ScreenshotName + "\\"
 					+ System.currentTimeMillis()+".png";
+			}else if (OS.toUpperCase().contains("MAC")) {
+				Dest= System.getProperty("user.dir") + "//screenshots//" + ScreenshotName + "//"
+						+ System.currentTimeMillis()+".png";	
+			}
 			File destination = new File(Dest);
 			FileUtils.copyFile(source, destination);
 
@@ -120,22 +126,31 @@ static String temppath="";
 		 */
 		// ********************************************************************************//
 		public static void initialize_Report() {
+			if (OS.toUpperCase().contains("WINDOWS")) {
 			reports=new ExtentReports(setup()+"\\myreport.html");
+			}
+			else if (OS.toUpperCase().contains("MAC")) {
+				reports=new ExtentReports(setup()+"//myreport.html");	
+			}
 			reports.addSystemInfo("User Name", System.getProperty("user.name"));
 			reports.addSystemInfo("Time Zone", System.getProperty("user.timezone"));
 			reports.addSystemInfo("Machine", "Windows 10"+" "+"64 Bit");
-			reports.addSystemInfo("Selenium", "2.53.0");
+			reports.addSystemInfo("Selenium", "3.141.59");
 			reports.addSystemInfo("Maven", "3.5.2");
 			reports.addSystemInfo("Java Version", "1.8.0_191");
 		
 		}
 		//************************************************************************************
 		public static String setup() {
+			String resultpath = null;
 			SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss");
 			String timestamp = d.format(Calendar.getInstance().getTime());
 			timestamp=timestamp.replace(":", "_");
-		   
-		    String resultpath=System.getProperty("user.dir")+"\\Results\\";
+			if (OS.toUpperCase().contains("WINDOWS")) {
+				resultpath=System.getProperty("user.dir")+"\\Results\\";
+			}else if (OS.toUpperCase().contains("MAC")) {
+				resultpath=System.getProperty("user.dir")+"//Results//";
+			}
 		    File f=new File(resultpath, timestamp);
 		    if(f.exists()==false) {
 		    	f.mkdir();}

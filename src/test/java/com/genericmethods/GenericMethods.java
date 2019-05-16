@@ -40,7 +40,7 @@ public class GenericMethods extends MakeExtentReport {
 	public static Properties prop;
 	static FileInputStream ip;
 	public static JavascriptExecutor js;
-	public static String OS = System.getProperty("os.name");
+	
 
 	// ****************************************GENERICMETHODS**********************//
 	/*
@@ -130,7 +130,8 @@ public class GenericMethods extends MakeExtentReport {
 			Actions act=new Actions(driver);
 			act.moveToElement(element).perform();
 			
-			element.sendKeys(keys);
+			js.executeScript("argument[0].value='"+keys+"';", element);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -207,7 +208,7 @@ public class GenericMethods extends MakeExtentReport {
 		driver.get(url);
 		driver.manage().deleteAllCookies();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.titleContains(driver.getTitle()));
-		
+
 	}
 
 	// *******************************************************************************//
@@ -681,7 +682,7 @@ public class GenericMethods extends MakeExtentReport {
 
 			while (true) {
 				((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
-				Thread.sleep(500);
+			
 
 				long newHeight = Long.parseLong(
 						((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
@@ -733,4 +734,32 @@ public class GenericMethods extends MakeExtentReport {
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 	//****************************************************************************************************************//	
+	/*
+	 * Method Name 		:= ConvertToIntPrice()
+	 * 
+	 * Input Parameter 	:= String s 
+	 * 
+	 * OutPut Parameter := Double.parseDouble(s)
+	 * 
+	 * Designer #		:= SHAMSHEER
+	 * 
+	 * Sprint #			:=
+	 */
+	// ************************************************************************************************************//
+
+		public static int ConvertToIntPrice(String s) {
+
+		if (s.contains("Rs")) {
+			s = s.substring(3, s.length());
+		}
+		try {
+			s = s.replaceAll(",", ""); // remove commas
+		} catch (Exception e) {
+
+		}
+
+		return (int) Math.round(Double.parseDouble(s)); // return rounded double
+														// cast to int
+	}
+	//**************************************************************************************************************//
 }

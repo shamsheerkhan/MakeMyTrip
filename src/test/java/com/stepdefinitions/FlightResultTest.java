@@ -15,6 +15,8 @@ import cucumber.api.java.en.Then;
 public class FlightResultTest extends GenericMethods {
 	public static HomePage home;
 	public static FlightResultPage flight;
+	boolean flag;
+	boolean status;
 
 	@Given("^user is on home page$")
 	public void user_is_on_home_page() {
@@ -68,5 +70,53 @@ public class FlightResultTest extends GenericMethods {
 	@Then("^user select the One Stop service and able see all Departure and Return flight Records$")
 	public void user_select_the_One_Stop_service_and_able_see_all_Departure_and_Return_flight_Records() {
 		flight.print_1Stop_flight_Records();
+	}
+
+	@Given("^user is selecting Departure and Return Flights with out any filter$")
+	public void user_is_selecting_Departure_and_Return_Flights_with_out_any_filter() {
+		toBottomOfPage();
+		toUP();
+		hoverAndClick(flight.btn_Reset);
+	
+	}
+
+	@Then("^user able to select the Departure Flight having (\\d+) index$") 
+	public void user_able_to_select_the_Departure_Flight_having(int arg1) {
+		try{
+			flag=flight.select_DepartureFlight(arg1);
+			
+		}catch(Exception e){
+		e.printStackTrace();	
+		}
+	}
+
+	@Then("^user able to select the Return Flight having (\\d+) index$")
+	public void user_able_to_select_the_Return_Flight_having(int arg1) {
+		
+		try{
+			status=flight.select_ReturnFlight(arg1);
+			
+		}catch(Exception e){
+			e.printStackTrace();	
+			}
+	}
+
+	@Then("^user able to validate selected Departure Flight Name and Price which is shown Footer of the web page$")
+	public void user_able_to_validate_selected_Departure_Flight_Name_and_Price_which_is_shown_Footer_of_the_web_page() {
+		if(flag){
+			flight.validate_SelectedDepartureDetails();
+		}
+	}
+
+	@Then("^user able to validate selected Return Flight Name and Price which is shown Footer of the web page$")
+	public void user_able_to_validate_selected_Return_Flight_Name_and_Price_which_is_shown_Footer_of_the_web_page() {
+		if(status){
+			flight.validate_SelectedReturnDetails();
+		}
+	}
+	
+	@Then("^user able to validate the total price excluding Discount  price if available$")
+	public void user_able_to_validate_the_total_price_excluding_Discount_price_if_available(){
+		Assert.assertTrue(flight.validateTotalprice());
 	}
 }
