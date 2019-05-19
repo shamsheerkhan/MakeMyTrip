@@ -13,6 +13,8 @@ import org.testng.SkipException;
 import com.cucumber.listener.Reporter;
 import com.genericmethods.GenericMethods;
 
+import utils.MakeExtentReport;
+
 public class FlightResultPage extends GenericMethods{
 
 	@FindBy(how = How.XPATH, using = "//div[@id='ow_domrt-jrny']//label[starts-with(@for,'splitowJourney')]")
@@ -81,7 +83,7 @@ public FlightResultPage(){
 		toUP();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(departures_flights_list));
 		if (departures_flights_list.size() < 1) {
-			logStatus("fail", "The flights are not found");
+			MakeExtentReport.logStatus("fail", "The flights are not found");
 			try {
 				throw new Exception("No Flight availabe and select another Departure Date");
 			} catch (Exception e) {
@@ -97,7 +99,7 @@ public FlightResultPage(){
 		toUP();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(Return_flights_list));
 		if (Return_flights_list.size() < 1) {
-			logStatus("fail", "The flights are not found");
+			MakeExtentReport.logStatus("fail", "The flights are not found");
 			try {
 				throw new Exception("No Flight availabe and select another Return Date");
 			} catch (Exception e) {

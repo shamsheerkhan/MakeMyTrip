@@ -9,23 +9,24 @@ import cucumber.api.java.Before;
 import utils.MakeExtentReport;
 
 
-public class Common_Annotations extends GenericMethods{
+
+public class Common_Annotations {
 	
-	public static MakeExtentReport mkreports;
+	
 
 	
 	
 	@Before
 	public void initialize_report() {
 		
-	mkreports.initialize_Report();
-		mkreports.startReport("summary");
+		MakeExtentReport.initialize_Report();
+		MakeExtentReport.startReport("summary");
 	}
 	
 	@After
 	public void pulishReport() {
 		
-		mkreports.endReport();
+		MakeExtentReport.endReport();
 	}
-	
+
 }

@@ -12,10 +12,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Reporter;
-import org.testng.annotations.Test;
 
+import com.cucumber.listener.Reporter;
 import com.genericmethods.GenericMethods;
+
+import utils.MakeExtentReport;
+
 
 public class HomePage extends GenericMethods {
 
@@ -104,6 +106,7 @@ public class HomePage extends GenericMethods {
 		for (WebElement e : keys_Navigation) {
 			if (e.getText().equalsIgnoreCase(menu)) {
 				hoverAndClick(e);
+				MakeExtentReport.logStatus("pass", "clicked on Tab Menu" + menu);
 				break;
 			}
 		}
@@ -115,17 +118,21 @@ public class HomePage extends GenericMethods {
 	 */
 	// ***********************************************************************************************//
 
-	public void select_Trip() {
+	public boolean select_Trip() {
+		boolean status = false;
 		String Trip_type = prop.getProperty("Trip_type");
 		if (Trip_type.equalsIgnoreCase("RoundTrip")) {
 			btn_rounnd_Trip.click();
-
+			MakeExtentReport.logStatus("pass", "clicked on Round Trip");
+			return status = true;
 		} else if (Trip_type.equalsIgnoreCase("OneWay")) {
 			btn_OneWayTrip.click();
-
+			MakeExtentReport.logStatus("pass", "clicked on OneWay");
+			return status = true;
 		} else {
 			btn_MultiCity.click();
-
+			MakeExtentReport.logStatus("pass", "clicked on MultiCity");
+			return status = true;
 		}
 	}
 	// **************************************************************************************************//
@@ -146,7 +153,7 @@ public class HomePage extends GenericMethods {
 		for (WebElement e : keys_Suggestions) {
 			if (e.getText().toUpperCase().contains(FromCityName.toUpperCase())) {
 				e.click();
-
+				MakeExtentReport.logStatus("pass", "Successfully entered the " + FromCityName);
 				flag = true;
 				break;
 			}
@@ -171,10 +178,10 @@ public class HomePage extends GenericMethods {
 		Explicitwait(10, txt_suggestion);
 
 		for (WebElement e : keys_Suggestions) {
-			
+
 			if (e.getText().toUpperCase().contains(ToCityName.toUpperCase())) {
 				e.click();
-
+				MakeExtentReport.logStatus("pass", "Successfully entered the " + ToCityName);
 				flag = true;
 				break;
 			}
@@ -227,6 +234,7 @@ public class HomePage extends GenericMethods {
 			WebElement deprt_date = driver.findElement(By.xpath(Departure_date_xpath));
 			if (deprt_date.isDisplayed()) {
 				hoverAndClick(deprt_date);
+				MakeExtentReport.logStatus("pass", "Successfully clicked on Departure Journey Date");
 			}
 
 			String return_jr_date_xpath = "//div[@role='heading']/div[text()='" + Month2 + "']" + "/span[text()='"
@@ -236,7 +244,7 @@ public class HomePage extends GenericMethods {
 			WebElement return_jr_date = driver.findElement(By.xpath(return_jr_date_xpath));
 			if (return_jr_date.isDisplayed()) {
 				hoverAndClick(return_jr_date);
-
+				MakeExtentReport.logStatus("pass", "Successfully clicked on Return Journey Date");
 			}
 
 			StatusFlag = true;
@@ -256,6 +264,7 @@ public class HomePage extends GenericMethods {
 	// ***********************************************************************************************//
 	public FlightResultPage clickSearch() {
 		hoverAndClick(btn_search);
+		MakeExtentReport.logStatus("pass", "Successfully clicked onn search button");
 		return new FlightResultPage();
 	}
 	// ****************************************************************************************************//

@@ -2,26 +2,23 @@ package utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 
-import com.cucumber.listener.Reporter;
+
 import com.genericmethods.GenericMethods;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
-public class MakeExtentReport {
+public class MakeExtentReport extends GenericMethods{
 public static ExtentReports reports;
 public static ExtentTest test;
 static String temppath="";
-public static String OS = System.getProperty("os.name");
+
 	// *******************************************************************************//
 	/*
 	 * Method Name := captureScreenShot()
@@ -39,21 +36,15 @@ public static String OS = System.getProperty("os.name");
 		// Take screenshot and store as a file format
 		String Dest=null;
 		try {
-			String ScreenshotName;
-			DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
-			String DateTimeStamp = dateTimeInstance.format(Calendar.getInstance().getTime());
-			DateTimeStamp = DateTimeStamp.replace(",", "");
-			DateTimeStamp = DateTimeStamp.replace(" ", "_");
-			DateTimeStamp = DateTimeStamp.replace(":", "_");
-			ScreenshotName = DateTimeStamp.toString();
+			String ScreenshotName = inDate.toString();
 			TakesScreenshot ts = (TakesScreenshot) GenericMethods.driver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
 			if (OS.toUpperCase().contains("WINDOWS")) {
 			Dest= System.getProperty("user.dir") + "\\screenshots\\" + ScreenshotName + "\\"
-					+ System.currentTimeMillis()+".png";
+					+intime+"\\"+ System.currentTimeMillis()+".png";
 			}else if (OS.toUpperCase().contains("MAC")) {
 				Dest= System.getProperty("user.dir") + "//screenshots//" + ScreenshotName + "//"
-						+ System.currentTimeMillis()+".png";	
+					+intime+"\\"+ System.currentTimeMillis()+".png";	
 			}
 			File destination = new File(Dest);
 			FileUtils.copyFile(source, destination);
@@ -126,35 +117,35 @@ public static String OS = System.getProperty("os.name");
 		 */
 		// ********************************************************************************//
 		public static void initialize_Report() {
+			load_properties();
 			if (OS.toUpperCase().contains("WINDOWS")) {
-			reports=new ExtentReports(setup()+"\\myreport.html");
+			reports=new ExtentReports(setup()+"\\myreport"+intime+".html");
 			}
 			else if (OS.toUpperCase().contains("MAC")) {
-				reports=new ExtentReports(setup()+"//myreport.html");	
+				reports=new ExtentReports(setup()+"//myreport"+intime+".html");	
 			}
-			reports.addSystemInfo("User Name", System.getProperty("user.name"));
+			reports.addSystemInfo("Host Name", System.getProperty("user.name"));
 			reports.addSystemInfo("Time Zone", System.getProperty("user.timezone"));
-			reports.addSystemInfo("Machine", "Windows 10"+" "+"64 Bit");
+			reports.addSystemInfo("Testing Application URL", prop.getProperty("URL"));
+			reports.addSystemInfo("Browser Name", prop.getProperty("browsername"));
 			reports.addSystemInfo("Selenium", "3.141.59");
 			reports.addSystemInfo("Maven", "3.5.2");
-			reports.addSystemInfo("Java Version", "1.8.0_191");
-		
+			reports.addSystemInfo("Java Version", System.getProperty("java.version"));
+			
 		}
 		//************************************************************************************
 		public static String setup() {
 			String resultpath = null;
-			SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss");
-			String timestamp = d.format(Calendar.getInstance().getTime());
-			timestamp=timestamp.replace(":", "_");
+			
 			if (OS.toUpperCase().contains("WINDOWS")) {
 				resultpath=System.getProperty("user.dir")+"\\Results\\";
 			}else if (OS.toUpperCase().contains("MAC")) {
 				resultpath=System.getProperty("user.dir")+"//Results//";
 			}
-		    File f=new File(resultpath, timestamp);
+		    File f=new File(resultpath, inDate);
 		    if(f.exists()==false) {
 		    	f.mkdir();}
-		    temppath=resultpath+timestamp;
+		    temppath=resultpath+inDate;
 		   return temppath;
 		}
 		//************************************************************************************************

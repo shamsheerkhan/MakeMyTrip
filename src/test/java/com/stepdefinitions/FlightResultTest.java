@@ -32,7 +32,7 @@ public class FlightResultTest extends GenericMethods {
 
 	@And("^user able to select round Trip$")
 	public void user_able_to_select_round_Trip() {
-		home.select_Trip();
+		Assert.assertTrue(home.select_Trip());
 	}
 
 	@Then("^user able to enter the From Departure City$")

@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,38 +31,39 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.cucumber.listener.Reporter;
 
 import utils.MakeExtentReport;
 
 
-public class GenericMethods extends MakeExtentReport {
+public class GenericMethods {
 	public static WebDriver driver;
 	public static ChromeOptions options;
-	public static Properties prop;
+	public static Properties prop= new Properties();
 	static FileInputStream ip;
 	public static JavascriptExecutor js;
-	
+	public static String OS = System.getProperty("os.name");
+	public static String[] rawDate = Calendar.getInstance().getTime().toString().split(" ");
+	public static String inDate = rawDate[0] + " " + rawDate[1] + " " + rawDate[2] + " " + rawDate[5];
+	public static String intime = rawDate[3].replace(":", "_");
 
 	// ****************************************GENERICMETHODS**********************//
 	/*
-	 * Method Name 			:= load_properties() 
-	 * Input Parameter	 	:= NA 
-	 * Output Parameters 	:= NA 
-	 * Designer 			:= SHASHEER KHAN 
-	 * Sprint# 				:= NA
+	 * Method Name := load_properties() Input Parameter := NA Output Parameters
+	 * := NA Designer := SHASHEER KHAN Sprint# := NA
 	 */
 	// *********************************************************************************//
 	public static void load_properties() {
-		prop = new Properties();
-		
-		if (OS.toUpperCase().contains("WINDOWS")) {
-		try {
-			ip = new FileInputStream(System.getProperty("user.dir") + "\\config\\configuration.properties");
-		} catch (FileNotFoundException e) {
+	
 
-			e.printStackTrace();
-		}}
-		else if (OS.toUpperCase().contains("MAC")) {
+		if (OS.toUpperCase().contains("WINDOWS")) {
+			try {
+				ip = new FileInputStream(System.getProperty("user.dir") + "\\config\\configuration.properties");
+			} catch (FileNotFoundException e) {
+
+				e.printStackTrace();
+			}
+		} else if (OS.toUpperCase().contains("MAC")) {
 			try {
 				ip = new FileInputStream(System.getProperty("user.dir") + "//config//configuration.properties");
 			} catch (FileNotFoundException e) {
@@ -79,15 +81,15 @@ public class GenericMethods extends MakeExtentReport {
 
 	// *******************************************************************************//
 	/*
-	 * Method Name 		:= hoverAndClick()
+	 * Method Name := hoverAndClick()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := Boolean
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ********************************************************************************//
 	public static void hoverAndClick(WebElement element) {
@@ -111,15 +113,15 @@ public class GenericMethods extends MakeExtentReport {
 	// **************************************************************//
 	// *******************************************************************************//
 	/*
-	 * Method Name 		:= hoverAndSendkeys()
+	 * Method Name := hoverAndSendkeys()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 	public static void hoverAndSendkeys(WebElement element, String keys) {
@@ -127,11 +129,11 @@ public class GenericMethods extends MakeExtentReport {
 		try {
 			// Wait till the WebElement is Displayed
 			Explicitwait(5, element);
-			Actions act=new Actions(driver);
+			Actions act = new Actions(driver);
 			act.moveToElement(element).perform();
-			
-			js.executeScript("argument[0].value='"+keys+"';", element);
-			
+
+			js.executeScript("arguments[0].value='" + keys + "';", element);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -140,19 +142,19 @@ public class GenericMethods extends MakeExtentReport {
 
 	// *******************************************************************************//
 	/*
-	 * Method Name 		:= lanunchBowser()
+	 * Method Name := lanunchBowser()
 	 * 
-	 * Input Parameter 	:= Browser name, application Url
+	 * Input Parameter := Browser name, application Url
 	 * 
 	 * OutPut Parameter := Launching Browser
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 	public static void lanunchBowser() {
-		load_properties();
+		//load_properties();
 		String browser = prop.getProperty("browsername");
 		String headless = prop.getProperty("HeadlessMode");
 		String imageDisable = prop.getProperty("DisableImage");
@@ -167,19 +169,24 @@ public class GenericMethods extends MakeExtentReport {
 
 				if (imageDisable.equalsIgnoreCase("yes")) {
 					cH_disableImg(options);
+					Reporter.addStepLog("chrome browser opened in Disable mode");
 				}
 				if (headless.equalsIgnoreCase("yes")) {
 					cH_headless(options);
+					Reporter.addStepLog("chrome browser opened in Headless mode");
 				}
 				DesiredCapabilities capabilites = DesiredCapabilities.chrome();
 				capabilites.setCapability(ChromeOptions.CAPABILITY, options);
 				driver = new ChromeDriver(options);
-
-				logStatus("pass","Chrome drive launched with headless mode = " + headless.toUpperCase()
-						+ ", Image Disable mode = " + imageDisable.toUpperCase());
+				
+				
+				 MakeExtentReport.logStatus("pass","Chrome drive launched with headless mode = " +
+				 headless.toUpperCase() + ", Image Disable mode = " +imageDisable.toUpperCase());
+				 
 
 			} catch (Exception e) {
 				e.printStackTrace();
+				MakeExtentReport.logStatus("fail", "Unable to launch the browser" + e.getMessage());
 			}
 		} else if (browser.equalsIgnoreCase("FF") || browser.toUpperCase().contains("FIRE")) {
 			try {
@@ -195,17 +202,19 @@ public class GenericMethods extends MakeExtentReport {
 
 				driver = new FirefoxDriver(FFoptions);
 
-				logStatus("pass","FF drive launched with headless mode = " + headless.toUpperCase()
+				MakeExtentReport.logStatus("pass", "FF drive launched with headless mode = " + headless.toUpperCase()
 						+ ", Image Disable mode = " + imageDisable.toUpperCase());
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				logStatus("fail","Unable to launch the browser"+e.getMessage());
+				MakeExtentReport.logStatus("fail", "Unable to launch the browser" + e.getMessage());
 			}
 		}
 
 		driver.manage().window().maximize();
 		driver.get(url);
+		MakeExtentReport.logStatus("pass", "Successfully user is on home page");
+
 		driver.manage().deleteAllCookies();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.titleContains(driver.getTitle()));
 
@@ -213,15 +222,15 @@ public class GenericMethods extends MakeExtentReport {
 
 	// *******************************************************************************//
 	/*
-	 * Method Name 		:= tearDownBrowser()
+	 * Method Name := tearDownBrowser()
 	 * 
-	 * Input Parameter 	:= NA
+	 * Input Parameter := NA
 	 * 
 	 * OutPut Parameter := Quit Browser
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 
@@ -231,15 +240,15 @@ public class GenericMethods extends MakeExtentReport {
 
 	// **********************************************************************************//
 	/*
-	 * Method Name 		:= hoverAnElement()
+	 * Method Name := hoverAnElement()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 
@@ -247,11 +256,11 @@ public class GenericMethods extends MakeExtentReport {
 		try {
 			// Wait till the WebElement is Displayed
 			Explicitwait(5, element);
-			 js = ((JavascriptExecutor) driver);
+			js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='3px solid red'", element);
 			}
-			Actions act=new Actions(driver);
+			Actions act = new Actions(driver);
 			act.moveToElement(element).build().perform();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -260,18 +269,18 @@ public class GenericMethods extends MakeExtentReport {
 
 	// ************************************************************************************//
 	/*
-	 * Method Name 		:= brokenlink()
+	 * Method Name := brokenlink()
 	 * 
-	 * Input Parameter 	:= Link URL
+	 * Input Parameter := Link URL
 	 * 
 	 * OutPut Parameter := Response code message
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
-	public static void brokenlink(WebElement element,String section_name) {
+	public static void brokenlink(WebElement element, String section_name) {
 		try {
 			String linkurl = getlinkurl(element);
 			String lnkname = getElementname(element);
@@ -279,9 +288,10 @@ public class GenericMethods extends MakeExtentReport {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.connect();
 			if (connection.getResponseCode() == 200) {
-				System.out.println(section_name+" "+lnkname + "<--Response code is-->" + connection.getResponseCode());
+				System.out.println(
+						section_name + " " + lnkname + "<--Response code is-->" + connection.getResponseCode());
 			} else {
-				System.out.println(section_name+" "+lnkname +" link is not working");
+				System.out.println(section_name + " " + lnkname + " link is not working");
 			}
 		} catch (MalformedURLException e) {
 
@@ -295,20 +305,20 @@ public class GenericMethods extends MakeExtentReport {
 
 	// **************************************************************************************//
 	/*
-	 * Method Name 		:= getlinkurl()
+	 * Method Name := getlinkurl()
 	 * 
-	 * Input Parameter 	:= WebElement,String section_name
+	 * Input Parameter := WebElement,String section_name
 	 * 
 	 * OutPut Parameter := ElementAttribute value
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 	public static String getlinkurl(WebElement element) {
 		String linkurl = null;
-		
+
 		try {
 
 			linkurl = element.getAttribute("href");
@@ -324,25 +334,25 @@ public class GenericMethods extends MakeExtentReport {
 
 	// **************************************************************************************//
 	/*
-	 * Method Name 		:= getElementname()
+	 * Method Name := getElementname()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := Element Name
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 	public static String getElementname(WebElement element) {
-		
+
 		String lnkname = "";
 		String linkurl = null;
 		try {
 			linkurl = getlinkurl(element);
 			try {
-				
+
 				lnkname = element.getText();
 				if (lnkname == null) {
 					lnkname = linkurl.substring(linkurl.lastIndexOf("/") + 1, linkurl.lastIndexOf("."));
@@ -359,15 +369,15 @@ public class GenericMethods extends MakeExtentReport {
 
 	// **************************************************************************************//
 	/*
-	 * Method Name 		:= verifyElementExist()
+	 * Method Name := verifyElementExist()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// *****************************************************************************************//
 	public static void verifyElementExist(WebElement element) {
@@ -386,17 +396,17 @@ public class GenericMethods extends MakeExtentReport {
 
 	}
 
-	//***********************************************************************************************//
+	// ***********************************************************************************************//
 	/*
-	 * Method Name 		:= verifyElementExistBoolean()
+	 * Method Name := verifyElementExistBoolean()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// *****************************************************************************************//
 	public static boolean verifyElementExistBoolean(WebElement element) {
@@ -417,16 +427,14 @@ public class GenericMethods extends MakeExtentReport {
 
 	}
 
-	//***********************************************************************************************//
+	// ***********************************************************************************************//
 	/*
-	 * Method Name 			:= verify_Section_All_tabs_existence() 
-	 * Input Parameters		:= List<WebElement> 
-	 * OutPut Parameters	:= NA
-	 * Designer				:= SHAMSHEER KHAN
-	 * Sprint#				:= NA
+	 * Method Name := verify_Section_All_tabs_existence() Input Parameters :=
+	 * List<WebElement> OutPut Parameters := NA Designer := SHAMSHEER KHAN
+	 * Sprint# := NA
 	 */
-	//***********************************************************************************************//
-	public void verify_Section_All_tabs_existence(List<WebElement> elements,String section_name) {
+	// ***********************************************************************************************//
+	public void verify_Section_All_tabs_existence(List<WebElement> elements, String section_name) {
 
 		try {
 			System.out.println("\n Going to verfying " + section_name + " section all tabs existence");
@@ -441,14 +449,12 @@ public class GenericMethods extends MakeExtentReport {
 		}
 
 	}
-	//***********************************************************************************************//
-		
+	// ***********************************************************************************************//
+
 	/*
-	 * Method Name 			:= verify_Section_tabs_navigation() 
-	 * Input Parameters		:= List<WebElement>,Section name 
-	 * OutPut Parameters	:= NA
-	 * Designer				:= SHAMSHEER KHAN
-	 * Sprint#				:= NA
+	 * Method Name := verify_Section_tabs_navigation() Input Parameters :=
+	 * List<WebElement>,Section name OutPut Parameters := NA Designer :=
+	 * SHAMSHEER KHAN Sprint# := NA
 	 */
 	// ***********************************************************************************************//
 	public void verify_Section_tabs_navigation(List<WebElement> elements, String section_name) {
@@ -470,24 +476,24 @@ public class GenericMethods extends MakeExtentReport {
 
 	// ***********************************************************************************************//
 	/*
-	 * Method Name 		:= verifyElementText()
+	 * Method Name := verifyElementText()
 	 * 
-	 * Input Parameter 	:= Expected test, Element
+	 * Input Parameter := Expected test, Element
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:= NA
+	 * Sprint # := NA
 	 */
 	// ********************************************************************************//
 	public static void verifyElementText(String exp_text, WebElement element) {
 		Explicitwait(5, element);
-		 js = ((JavascriptExecutor) driver);
+		js = ((JavascriptExecutor) driver);
 		for (int i = 0; i <= 3; i++) {
 			js.executeScript("arguments[0].style.border='2px solid red'", element);
 		}
-		Actions act=new Actions(driver);
+		Actions act = new Actions(driver);
 		act.moveToElement(element).perform();
 		String act_text = getElementname(element);
 		if (act_text.equals((exp_text).trim()))
@@ -498,26 +504,26 @@ public class GenericMethods extends MakeExtentReport {
 
 	// *******************************************************************************//
 	/*
-	 * Method Name 		:= hoverAndClick_boolean()
+	 * Method Name := hoverAndClick_boolean()
 	 * 
-	 * Input Parameter 	:= WebElement
+	 * Input Parameter := WebElement
 	 * 
 	 * OutPut Parameter := Boolean
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 	public static boolean hoverAndClick_boolean(WebElement element) {
 		boolean flag = false;
 		try {
 			Explicitwait(5, element);
-			 js= ((JavascriptExecutor) driver);
+			js = ((JavascriptExecutor) driver);
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='2px solid red'", element);
 			}
-			Actions act=new Actions(driver);
+			Actions act = new Actions(driver);
 			act.moveToElement(element).build().perform();
 			js.executeScript("arguments[0].click();", element);
 
@@ -531,36 +537,37 @@ public class GenericMethods extends MakeExtentReport {
 
 	// ****************************************************************************************//
 	/*
-	 * Method Name 		:= Explicitwait()
+	 * Method Name := Explicitwait()
 	 * 
-	 * Input Parameter 	:= timeout,WebElement
+	 * Input Parameter := timeout,WebElement
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
-	
+
 	public static void Explicitwait(int timeout, WebElement e) {
-		 new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(e));
+		new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(e));
 	}
-	//*********************************************************************************************//
+
+	// *********************************************************************************************//
 	/*
-	 * Method Name 		:= getPath()
+	 * Method Name := getPath()
 	 * 
-	 * Input Parameter 	:= browser
+	 * Input Parameter := browser
 	 * 
 	 * OutPut Parameter := driverPath
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 	public static String getPath(String browser) {
-		
+
 		String driverPath = null;
 		if (OS.toUpperCase().contains("WINDOWS")) {
 			if (browser.toUpperCase().contains("CHROME")) {
@@ -578,18 +585,18 @@ public class GenericMethods extends MakeExtentReport {
 		}
 		return driverPath;
 	}
-	//*************************************************************************************************//
-	//disables images in chrome browser
+	// *************************************************************************************************//
+	// disables images in chrome browser
 	/*
-	 * Method Name 		:= cH_disableImg()
+	 * Method Name := cH_disableImg()
 	 * 
-	 * Input Parameter 	:= ChromeOptions options
+	 * Input Parameter := ChromeOptions options
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 
@@ -600,18 +607,18 @@ public class GenericMethods extends MakeExtentReport {
 		pref.put("profile.default_content_setting_values", images);
 		options.setExperimentalOption("prefs", pref);
 	}
-	//*******************************************************************************************************//	
-	//disables images in Firefox browser
+	// *******************************************************************************************************//
+	// disables images in Firefox browser
 	/*
-	 * Method Name 		:= fF_disableImg()
+	 * Method Name := fF_disableImg()
 	 * 
-	 * Input Parameter 	:= FirefoxOptions options
+	 * Input Parameter := FirefoxOptions options
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 
@@ -621,18 +628,18 @@ public class GenericMethods extends MakeExtentReport {
 		options.setProfile(profile);
 		options.setCapability(FirefoxDriver.PROFILE, profile);
 	}
-	//****************************************************************************************************//
-	//Configures chrome to run in headless mode
+	// ****************************************************************************************************//
+	// Configures chrome to run in headless mode
 	/*
-	 * Method Name 		:= cH_headless()
+	 * Method Name := cH_headless()
 	 * 
-	 * Input Parameter 	:= ChromeOptions options
+	 * Input Parameter := ChromeOptions options
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 
@@ -640,18 +647,18 @@ public class GenericMethods extends MakeExtentReport {
 		options.addArguments("window-size=1400,800");
 		options.addArguments("headless");
 	}
-	//************************************************************************************************************//	
-	//Configures FireFox to run in headless mode
+	// ************************************************************************************************************//
+	// Configures FireFox to run in headless mode
 	/*
-	 * Method Name 		:= fF_headless()
+	 * Method Name := fF_headless()
 	 * 
-	 * Input Parameter 	:= FirefoxOptions options
+	 * Input Parameter := FirefoxOptions options
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 
@@ -660,18 +667,18 @@ public class GenericMethods extends MakeExtentReport {
 		firefoxBinary.addCommandLineOptions("--headless");
 		options.setBinary(firefoxBinary);
 	}
-	//*************************************************************************************************************//
-	//Scrolls till the bottom of page
+	// *************************************************************************************************************//
+	// Scrolls till the bottom of page
 	/*
-	 * Method Name 		:= toBottomOfPage()
+	 * Method Name := toBottomOfPage()
 	 * 
-	 * Input Parameter 	:= NA 
+	 * Input Parameter := NA
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 
@@ -682,7 +689,6 @@ public class GenericMethods extends MakeExtentReport {
 
 			while (true) {
 				((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
-			
 
 				long newHeight = Long.parseLong(
 						((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
@@ -695,18 +701,18 @@ public class GenericMethods extends MakeExtentReport {
 			e.printStackTrace();
 		}
 	}
-	//****************************************************************************************************************//	
-	//Scrolls to top of page
+	// ****************************************************************************************************************//
+	// Scrolls to top of page
 	/*
-	 * Method Name 		:= toUP()
+	 * Method Name := toUP()
 	 * 
-	 * Input Parameter 	:= NA 
+	 * Input Parameter := NA
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ***************************************************************************************//
 
@@ -715,39 +721,39 @@ public class GenericMethods extends MakeExtentReport {
 		((JavascriptExecutor) driver).executeScript("window.scrollTo(document.body.scrollHeight,0);");
 
 	}
-	//****************************************************************************************************************//	
-	//Scrolls till element view
+	// ****************************************************************************************************************//
+	// Scrolls till element view
 	/*
-	 * Method Name 		:= toElement()
+	 * Method Name := toElement()
 	 * 
-	 * Input Parameter 	:= WebElement element 
+	 * Input Parameter := WebElement element
 	 * 
 	 * OutPut Parameter := NA
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ************************************************************************************************************//
 
 	public static void toElement(WebElement element) {
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
 	}
-	//****************************************************************************************************************//	
+	// ****************************************************************************************************************//
 	/*
-	 * Method Name 		:= ConvertToIntPrice()
+	 * Method Name := ConvertToIntPrice()
 	 * 
-	 * Input Parameter 	:= String s 
+	 * Input Parameter := String s
 	 * 
 	 * OutPut Parameter := Double.parseDouble(s)
 	 * 
-	 * Designer #		:= SHAMSHEER
+	 * Designer # := SHAMSHEER
 	 * 
-	 * Sprint #			:=
+	 * Sprint # :=
 	 */
 	// ************************************************************************************************************//
 
-		public static int ConvertToIntPrice(String s) {
+	public static int ConvertToIntPrice(String s) {
 
 		if (s.contains("Rs")) {
 			s = s.substring(3, s.length());
@@ -761,5 +767,5 @@ public class GenericMethods extends MakeExtentReport {
 		return (int) Math.round(Double.parseDouble(s)); // return rounded double
 														// cast to int
 	}
-	//**************************************************************************************************************//
+	// **************************************************************************************************************//
 }
