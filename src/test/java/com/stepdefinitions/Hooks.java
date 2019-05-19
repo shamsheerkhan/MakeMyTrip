@@ -1,21 +1,10 @@
 package com.stepdefinitions;
 
-
-
-import com.genericmethods.GenericMethods;
-
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import utils.MakeExtentReport;
 
-
-
-public class Common_Annotations {
-	
-	
-
-	
-	
+public class Hooks {
 	@Before
 	public void initialize_report() {
 		
@@ -24,9 +13,13 @@ public class Common_Annotations {
 	}
 	
 	@After
-	public void pulishReport() {
+	public void publishReport() {
 		
 		MakeExtentReport.endReport();
+		System.out.println("end report");
 	}
+	
 
-}
+	
+	
+	}
