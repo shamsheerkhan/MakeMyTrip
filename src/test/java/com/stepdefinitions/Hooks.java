@@ -16,7 +16,7 @@ public class Hooks {
 	public void publishReport() {
 		
 		MakeExtentReport.endReport();
-		System.out.println("end report");
+		
 	}
 	
 

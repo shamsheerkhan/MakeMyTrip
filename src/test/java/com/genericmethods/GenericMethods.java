@@ -35,11 +35,10 @@ import com.cucumber.listener.Reporter;
 
 import utils.MakeExtentReport;
 
-
 public class GenericMethods {
 	public static WebDriver driver;
 	public static ChromeOptions options;
-	public static Properties prop= new Properties();
+	public static Properties prop = new Properties();
 	static FileInputStream ip;
 	public static JavascriptExecutor js;
 	public static String OS = System.getProperty("os.name");
@@ -54,7 +53,6 @@ public class GenericMethods {
 	 */
 	// *********************************************************************************//
 	public static void load_properties() {
-	
 
 		if (OS.toUpperCase().contains("WINDOWS")) {
 			try {
@@ -154,7 +152,7 @@ public class GenericMethods {
 	 */
 	// ********************************************************************************//
 	public static void lanunchBowser() {
-		//load_properties();
+		// load_properties();
 		String browser = prop.getProperty("browsername");
 		String headless = prop.getProperty("HeadlessMode");
 		String imageDisable = prop.getProperty("DisableImage");
@@ -178,11 +176,9 @@ public class GenericMethods {
 				DesiredCapabilities capabilites = DesiredCapabilities.chrome();
 				capabilites.setCapability(ChromeOptions.CAPABILITY, options);
 				driver = new ChromeDriver(options);
-				
-				
-				 MakeExtentReport.logStatus("pass","Chrome drive launched with headless mode = " +
-				 headless.toUpperCase() + ", Image Disable mode = " +imageDisable.toUpperCase());
-				 
+
+				MakeExtentReport.logStatus("pass", "Chrome drive launched with headless mode = "
+						+ headless.toUpperCase() + ", Image Disable mode = " + imageDisable.toUpperCase());
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -768,4 +764,10 @@ public class GenericMethods {
 														// cast to int
 	}
 	// **************************************************************************************************************//
+	public static By get_DynamicXpath(String xpath,String data)
+	{
+		String rawXpath=xpath.replaceAll("%replacable%", data);
+		return By.xpath(rawXpath);
+	}
+	// *********************************************************************************************************************//
 }

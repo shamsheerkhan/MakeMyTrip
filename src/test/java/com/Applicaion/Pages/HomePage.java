@@ -13,7 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.cucumber.listener.Reporter;
+
 import com.genericmethods.GenericMethods;
 
 import utils.MakeExtentReport;
@@ -66,7 +66,7 @@ public class HomePage extends GenericMethods {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='DEPARTURE']")
 	public WebElement Date_calender;
-
+	String datePicker_xpath ="//div[@aria-label='%replacable%' and @aria-disabled='false']";
 	@FindBy(how = How.XPATH, using = "//a[text()='Search']")
 	public WebElement btn_search;
 
@@ -147,7 +147,8 @@ public class HomePage extends GenericMethods {
 		boolean flag = false;
 		String FromCityName = prop.getProperty("From_City");
 		hoverAnElement(tbx_From_City);
-		tbx_From_City.sendKeys(FromCityName, Keys.ENTER);
+		//hoverAndSendkeys(tbx_From_City, FromCityName);
+		tbx_From_City.sendKeys(FromCityName,Keys.ENTER);
 		Explicitwait(10, txt_suggestion);
 
 		for (WebElement e : keys_Suggestions) {
@@ -200,48 +201,30 @@ public class HomePage extends GenericMethods {
 	public boolean DatePicker() {
 		int days_gap = Integer.parseInt(prop.getProperty("Days_Gap"));
 		boolean StatusFlag = false;
-		Date date1 = new Date();
 		Calendar c = Calendar.getInstance();
-		c.setTime(date1);
-
+		Date date1 = c.getTime();
 		c.add(Calendar.DATE, days_gap); // Adding User defined Days in current
 										// date. this is arrival date.
 
 		Date date2 = c.getTime();
 
-		SimpleDateFormat formatNowDay = new SimpleDateFormat("dd");
-		SimpleDateFormat formatNowMonth = new SimpleDateFormat("MMMM");
-		SimpleDateFormat formatNowYear = new SimpleDateFormat("YYYY");
-		String Day1 = formatNowDay.format(date1);
-		String Month1 = formatNowMonth.format(date1);
-		String Year1 = formatNowYear.format(date1);
-		if (Day1.startsWith("0")) {
-			Day1 = Day1.substring(1);
-		}
+		String[] jr_day = date1.toString().split(" ");
+		String jr_date = jr_day[0] + " " + jr_day[1] + " " + jr_day[2] + " " + jr_day[5];
+		String[] rn_day = date2.toString().split(" ");
+		String rn_date = rn_day[0] + " " + rn_day[1] + " " + rn_day[2] + " " + rn_day[5];
 
-		String Day2 = formatNowDay.format(date2);
-		String Month2 = formatNowMonth.format(date2);
-		String Year2 = formatNowYear.format(date2);
-		if (Day2.startsWith("0")) {
-			Day2 = Day2.substring(1);
-		}
 		try {
 			Date_calender.click();
-			String Departure_date_xpath = "//div[@role='heading']/div[text()='" + Month1 + "']" + "/span[text()='"
-					+ Year1 + "']//../../following-sibling::div[@role='rowgroup'][2]" + "/div//p[text()='" + Day1
-					+ "']/../..";
+			
 			// picking Departure date from calendar
-			WebElement deprt_date = driver.findElement(By.xpath(Departure_date_xpath));
+			WebElement deprt_date = driver.findElement(get_DynamicXpath(datePicker_xpath, jr_date));
 			if (deprt_date.isDisplayed()) {
 				hoverAndClick(deprt_date);
 				MakeExtentReport.logStatus("pass", "Successfully clicked on Departure Journey Date");
 			}
 
-			String return_jr_date_xpath = "//div[@role='heading']/div[text()='" + Month2 + "']" + "/span[text()='"
-					+ Year2 + "']//../../following-sibling::div[@role='rowgroup'][2]/div//p[text()='" + Day2
-					+ "']/../..";
 			// picking Return Journey date from calendar
-			WebElement return_jr_date = driver.findElement(By.xpath(return_jr_date_xpath));
+			WebElement return_jr_date = driver.findElement(get_DynamicXpath(datePicker_xpath, rn_date));
 			if (return_jr_date.isDisplayed()) {
 				hoverAndClick(return_jr_date);
 				MakeExtentReport.logStatus("pass", "Successfully clicked on Return Journey Date");

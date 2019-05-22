@@ -2,16 +2,34 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="31213" started-at="2019-05-12T16:18:51Z" finished-at="2019-05-12T16:19:23Z">
+  <suite name="Default suite" duration-ms="93144" started-at="2019-05-22T07:35:02Z" finished-at="2019-05-22T07:36:35Z">
     <groups>
+      <group name="cucumber">
+        <method signature="AbstractTestNGCucumberTests.feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:com.testrunner.FlightTestRunner@1f983a6]" name="feature" class="cucumber.api.testng.AbstractTestNGCucumberTests"/>
+      </group> <!-- cucumber -->
     </groups>
-    <test name="Default test" duration-ms="31213" started-at="2019-05-12T16:18:51Z" finished-at="2019-05-12T16:19:23Z">
-      <class name="com.Applicaion.Pages.HomePage">
-        <test-method status="PASS" signature="print()[pri:0, instance:com.Applicaion.Pages.HomePage@a097cc]" name="print" duration-ms="31176" started-at="2019-05-12T21:48:51Z" finished-at="2019-05-12T21:49:23Z">
+    <test name="Default test" duration-ms="93144" started-at="2019-05-22T07:35:02Z" finished-at="2019-05-22T07:36:35Z">
+      <class name="com.testrunner.FlightTestRunner">
+        <test-method status="PASS" signature="setUpClass()[pri:0, instance:com.testrunner.FlightTestRunner@1f983a6]" name="setUpClass" is-config="true" duration-ms="766" started-at="2019-05-22T13:05:02Z" finished-at="2019-05-22T13:05:03Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- print -->
-      </class> <!-- com.Applicaion.Pages.HomePage -->
+        </test-method> <!-- setUpClass -->
+        <test-method status="PASS" signature="feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:com.testrunner.FlightTestRunner@1f983a6]" name="feature" duration-ms="92144" started-at="2019-05-22T13:05:03Z" description="Runs Cucumber Feature" data-provider="features" finished-at="2019-05-22T13:06:35Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[this feature is designed to test flight test results]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- feature -->
+        <test-method status="PASS" signature="tearDownClass()[pri:0, instance:com.testrunner.FlightTestRunner@1f983a6]" name="tearDownClass" is-config="true" duration-ms="4" started-at="2019-05-22T13:06:35Z" finished-at="2019-05-22T13:06:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownClass -->
+      </class> <!-- com.testrunner.FlightTestRunner -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
