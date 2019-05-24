@@ -1,5 +1,6 @@
 package com.genericmethods;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,9 +15,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,12 +32,15 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 
-import com.cucumber.listener.Reporter;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 
-import utils.MakeExtentReport;
+import utils.ExtentReportGenerator;
 
 public class GenericMethods {
 	public static WebDriver driver;
@@ -45,6 +52,9 @@ public class GenericMethods {
 	public static String[] rawDate = Calendar.getInstance().getTime().toString().split(" ");
 	public static String inDate = rawDate[0] + " " + rawDate[1] + " " + rawDate[2] + " " + rawDate[5];
 	public static String intime = rawDate[3].replace(":", "_");
+	public static ExtentReports extent = ExtentReportGenerator.createInstance();
+	public static ThreadLocal<ExtentTest> test1 = new ThreadLocal<ExtentTest>();
+	public static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
 	// ****************************************GENERICMETHODS**********************//
 	/*
@@ -167,22 +177,24 @@ public class GenericMethods {
 
 				if (imageDisable.equalsIgnoreCase("yes")) {
 					cH_disableImg(options);
-					Reporter.addStepLog("chrome browser opened in Disable mode");
+					ExtentReportGenerator.logStatus("log_pass", "chrome browser opened in Disable mode");
+
 				}
 				if (headless.equalsIgnoreCase("yes")) {
 					cH_headless(options);
-					Reporter.addStepLog("chrome browser opened in Headless mode");
+					ExtentReportGenerator.logStatus("log_pass", "chrome browser opened in Headless mode");
+
 				}
 				DesiredCapabilities capabilites = DesiredCapabilities.chrome();
 				capabilites.setCapability(ChromeOptions.CAPABILITY, options);
 				driver = new ChromeDriver(options);
-
-				MakeExtentReport.logStatus("pass", "Chrome drive launched with headless mode = "
+				ExtentReportGenerator.logStatus("log_pass", "Chrome drive launched with headless mode = "
 						+ headless.toUpperCase() + ", Image Disable mode = " + imageDisable.toUpperCase());
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				MakeExtentReport.logStatus("fail", "Unable to launch the browser" + e.getMessage());
+				ExtentReportGenerator.logStatus("log_fail", "Unable to launch the browser" + e.getMessage());
+
 			}
 		} else if (browser.equalsIgnoreCase("FF") || browser.toUpperCase().contains("FIRE")) {
 			try {
@@ -197,20 +209,23 @@ public class GenericMethods {
 				}
 
 				driver = new FirefoxDriver(FFoptions);
-
-				MakeExtentReport.logStatus("pass", "FF drive launched with headless mode = " + headless.toUpperCase()
-						+ ", Image Disable mode = " + imageDisable.toUpperCase());
+				ExtentReportGenerator.logStatus("log_pass", "FF drive launched with headless mode = "
+						+ headless.toUpperCase() + ", Image Disable mode = " + imageDisable.toUpperCase());
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				MakeExtentReport.logStatus("fail", "Unable to launch the browser" + e.getMessage());
+				ExtentReportGenerator.logStatus("log_fail","Unable to launch the browser" + e.getMessage());
+				
 			}
 		}
 
 		driver.manage().window().maximize();
+		
+		ExtentReportGenerator.logStatus("log_pass", browser + " Maximized");
 		driver.get(url);
-		MakeExtentReport.logStatus("pass", "Successfully user is on home page");
-
+		ExtentReportGenerator.logStatus("log_pass", prop.getProperty("URL") + " Opened");
+		ExtentReportGenerator.logStatus("log_pass", "Successfully user is on home page");
+		
 		driver.manage().deleteAllCookies();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.titleContains(driver.getTitle()));
 
@@ -680,14 +695,12 @@ public class GenericMethods {
 
 	public static void toBottomOfPage() {
 		try {
-			long Height = Long.parseLong(
-					((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
+			long Height = Long.parseLong(js.executeScript("return document.body.scrollHeight").toString());
 
 			while (true) {
-				((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+				js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
-				long newHeight = Long.parseLong(
-						((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight").toString());
+				long newHeight = Long.parseLong(js.executeScript("return document.body.scrollHeight").toString());
 				if (newHeight == Height) {
 					break;
 				}
@@ -714,7 +727,7 @@ public class GenericMethods {
 
 	public static void toUP() {
 
-		((JavascriptExecutor) driver).executeScript("window.scrollTo(document.body.scrollHeight,0);");
+		js.executeScript("window.scrollTo(document.body.scrollHeight,0);");
 
 	}
 	// ****************************************************************************************************************//
@@ -733,7 +746,7 @@ public class GenericMethods {
 	// ************************************************************************************************************//
 
 	public static void toElement(WebElement element) {
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+		js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 	// ****************************************************************************************************************//
 	/*
@@ -763,11 +776,51 @@ public class GenericMethods {
 		return (int) Math.round(Double.parseDouble(s)); // return rounded double
 														// cast to int
 	}
+
 	// **************************************************************************************************************//
-	public static By get_DynamicXpath(String xpath,String data)
-	{
-		String rawXpath=xpath.replaceAll("%replacable%", data);
+	public static By get_DynamicXpath(String xpath, String data) {
+		String rawXpath = xpath.replaceAll("%replacable%", data);
 		return By.xpath(rawXpath);
 	}
 	// *********************************************************************************************************************//
+
+	// *******************************************************************************//
+	/*
+	 * Method Name := captureScreenShot()
+	 * 
+	 * Input Parameter := NA
+	 * 
+	 * OutPut Parameter := NA
+	 * 
+	 * Designer #:= shamsheer
+	 * 
+	 * Sprint #:=
+	 */
+	// ********************************************************************************//
+	public static String captureScreenShot() {
+		// Take screenshot and store as a file format
+		String Dest = null;
+		try {
+			String ScreenshotName = inDate.toString();
+			TakesScreenshot ts = (TakesScreenshot) GenericMethods.driver;
+			File source = ts.getScreenshotAs(OutputType.FILE);
+			if (OS.toUpperCase().contains("WINDOWS")) {
+				Dest = System.getProperty("user.dir") + "\\screenshots\\" + ScreenshotName + "\\" + intime + "\\"
+						+ System.currentTimeMillis() + ".png";
+			} else if (OS.toUpperCase().contains("MAC")) {
+				Dest = System.getProperty("user.dir") + "/screenshots/" + ScreenshotName + "/" + intime + "/"
+						+ System.currentTimeMillis() + ".png";
+			}
+			File destination = new File(Dest);
+			FileUtils.copyFile(source, destination);
+
+			return Dest;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	// ***************************************************************************************************//
+
 }

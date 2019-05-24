@@ -8,12 +8,15 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 import org.testng.SkipException;
 
-import com.cucumber.listener.Reporter;
+
 import com.genericmethods.GenericMethods;
 
-import utils.MakeExtentReport;
+
+import utils.ExtentReportGenerator;
+
 
 public class FlightResultPage extends GenericMethods{
 
@@ -83,9 +86,10 @@ public FlightResultPage(){
 		toUP();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(departures_flights_list));
 		if (departures_flights_list.size() < 1) {
-			MakeExtentReport.logStatus("fail", "The flights are not found");
+			ExtentReportGenerator.logStatus("fail", "No Flight availabe at selected date and select another Departure Date");
 			try {
-				throw new Exception("No Flight availabe and select another Departure Date");
+				throw new Exception("No Flight availabe at selected date and select another Departure Date");
+				
 			} catch (Exception e) {
 
 				e.printStackTrace();
@@ -99,9 +103,9 @@ public FlightResultPage(){
 		toUP();
 		new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(Return_flights_list));
 		if (Return_flights_list.size() < 1) {
-			MakeExtentReport.logStatus("fail", "The flights are not found");
+			ExtentReportGenerator.logStatus("fail", "No Flight availabe at selected date and select another Return Date");
 			try {
-				throw new Exception("No Flight availabe and select another Return Date");
+				throw new Exception("No Flight availabe at selected date and select another Return Date");
 			} catch (Exception e) {
 
 				e.printStackTrace();
@@ -136,7 +140,9 @@ public FlightResultPage(){
 		e.printStackTrace();
 	}
 	System.out.println("The no. of departures flights with Non Stop filter are"+departure_Flight_count());
+	test.get().info("The no. of departures flights with Non Stop filter are"+departure_Flight_count());
 	System.out.println("The no. of Return flights with Non Stop filter are"+return_Flight_count());
+	test.get().info("The no. of Return flights with Non Stop filter are"+return_Flight_count());
 	
 	}
 	//**************************************************************************************************//
@@ -166,8 +172,9 @@ public FlightResultPage(){
 		e.printStackTrace();
 	}
 	System.out.println("The no. of departures flights with One Stop filter are"+departure_Flight_count());
+	test.get().info("The no. of departures flights with One Stop filter are"+departure_Flight_count());
 	System.out.println("The no. of Return flights with One Stop filter are"+return_Flight_count());
-	
+	test.get().info("The no. of Return flights with One Stop filter are"+return_Flight_count());
 	}
 	//**************************************************************************************************//
 	/*
@@ -246,13 +253,20 @@ public FlightResultPage(){
 		toElement(element);
 		Departureflight_Details(element);
 		hoverAndClick(element);
+		ExtentReportGenerator.logStatus("pass", "clicked on Departure flight having index "+index);
 		System.out.println("The Departure Flight Name is "+getDepartureFlight_Name());
+		test.get().info("The Departure Flight Name is "+getDepartureFlight_Name());
 		System.out.println("The Departure Flight Price is "+getDepartureFlight_Price());
+		test.get().info("The Departure Flight Price is "+getDepartureFlight_Price());
 		flag=true;
 		}else{
+			ExtentReportGenerator.logStatus("skip", 
+					"Given " + index + " Index number is more than number of Departure flight listed or Negative value");
+			Reporter.log("select flight from another departure date");
+			test.get().info("select flight from another departure date");
 			throw new SkipException(
 					"Given " + index + " Index number is more than number of Departure flight listed or Negative value");
-		
+			
 		}
 		return flag;
 	}
@@ -273,9 +287,13 @@ public FlightResultPage(){
 		String footerDeptFlightDetails=bottom_Departure_Flight.getText();
 		if(footerDeptFlightDetails.replaceAll("\\s+", "").contains(getDepartureFlight_Name().replaceAll("\\s+", ""))&&
 				footerDeptFlightDetails.replaceAll("\\s+", "").contains(getDepartureFlight_Name().replaceAll("\\s+", ""))){
-			System.out.println("The flight name "+getDepartureFlight_Name()+" The Flight price matched "+getDepartureFlight_Price());
+			
+			System.out.println("The flight name "+getDepartureFlight_Name()+" The Flight price "+getDepartureFlight_Price()+" matched");
+	test.get().info("The flight name "+getDepartureFlight_Name()+" The Flight price  "+getDepartureFlight_Price()+" matched");
 		}else{
 			System.out.println("The Departure flight Details not matched with selected Flight "
+		+getDepartureFlight_Name());
+	test.get().info("The Departure flight Details not matched with selected Flight "
 		+getDepartureFlight_Name());
 		}
 	}
@@ -300,13 +318,20 @@ public FlightResultPage(){
 		toElement(element);
 		returnflight_Details(element);
 		hoverAndClick(element);
+		ExtentReportGenerator.logStatus("pass", "clicked on Return flight having index "+index);
 		System.out.println("The Return Flight Name is "+getReturnFlight_Name());
+		test.get().info("The Return Flight Name is "+getReturnFlight_Name());
 		System.out.println("The Return Flight Price is "+getReturnFlight_Price());
+		test.get().info("The Return Flight Price is "+getReturnFlight_Price());
 		flag=true;
 		}else{
-			throw new SkipException(
+			ExtentReportGenerator.logStatus("skip", 
 					"Given " + index + " Index number is more than number of Return flight listed or Negative value");
-				}
+			Reporter.log("select flight from another Return journey date");
+			test.get().info("select flight from another Return journey date");
+			throw new SkipException(
+					"Given " + index + " Index number is more than number of Return flight listed or Negative value");		
+			}
 		return flag;
 	}	
 	//******************************************************************************************************//
@@ -326,11 +351,15 @@ public FlightResultPage(){
 		String footerreturnFlightDetails=bottom_Return_Flight.getText();
 		if(footerreturnFlightDetails.replaceAll("\\s+", "").contains(getReturnFlight_Name().replaceAll("\\s+", ""))&&
 				footerreturnFlightDetails.replaceAll("\\s+", "").contains(getReturnFlight_Name().replaceAll("\\s+", ""))){
-			System.out.println("The flight name "+getReturnFlight_Name()+" The Flight price matched "+getReturnFlight_Price());
+			System.out.println("The flight name "+getReturnFlight_Name()+" The Flight price "+getReturnFlight_Price()+" matched");
+		
+		test.get().info("The flight name "+getReturnFlight_Name()+" The Flight price "+getReturnFlight_Price()+" matched");
 		}
 		else{
 			System.out.println("The Return flight Details not matched with selected Flight "
 		+getReturnFlight_Name());
+			test.get().info("The Return flight Details not matched with selected Flight "
+					+getReturnFlight_Name());
 		}
 	}
 	//*************************************************************************************************************//		
@@ -355,11 +384,13 @@ public FlightResultPage(){
 			discount=ConvertToIntPrice(data[data.length-1]);
 		}else
 			System.out.println("There is no Discount price for selected flights");
+			test.get().info("There is no Discount price for selected flights");
 			}
 		catch(Exception e){
 			
 		}
 		System.out.println("Applied discount is: "+discount+". Amount will be adjust from final fare");
+		test.get().info("Applied discount is: "+discount+". Amount will be adjust from final fare");
 		return discount;
 	}
 	//*************************************************************************************************************//		
@@ -379,9 +410,11 @@ public FlightResultPage(){
 		boolean flag=false;
 		int totalFare=ConvertToIntPrice(departureFlight_Price)+
 				ConvertToIntPrice(returnFlight_Price)-isDiscountApplied();
+		test.get().info("the total fare is "+totalFare);
 		if(totalFare==ConvertToIntPrice(txt_totalfare.getText())){
 			flag=true;
 			System.out.println("The total fare is matched of selected flight");
+			test.get().info("The total fare is matched of selected flight");
 		}
 		return flag;
 	}

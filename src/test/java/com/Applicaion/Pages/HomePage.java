@@ -12,12 +12,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-
+import org.testng.Reporter;
 
 import com.genericmethods.GenericMethods;
 
-import utils.MakeExtentReport;
-
+import utils.ExtentReportGenerator;
 
 public class HomePage extends GenericMethods {
 
@@ -66,7 +65,7 @@ public class HomePage extends GenericMethods {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='DEPARTURE']")
 	public WebElement Date_calender;
-	String datePicker_xpath ="//div[@aria-label='%replacable%' and @aria-disabled='false']";
+	String datePicker_xpath = "//div[@aria-label='%replacable%' and @aria-disabled='false']";
 	@FindBy(how = How.XPATH, using = "//a[text()='Search']")
 	public WebElement btn_search;
 
@@ -106,7 +105,8 @@ public class HomePage extends GenericMethods {
 		for (WebElement e : keys_Navigation) {
 			if (e.getText().equalsIgnoreCase(menu)) {
 				hoverAndClick(e);
-				MakeExtentReport.logStatus("pass", "clicked on Tab Menu" + menu);
+				ExtentReportGenerator.logStatus("pass", "clicked on Tab Menu " + menu);
+
 				break;
 			}
 		}
@@ -123,17 +123,18 @@ public class HomePage extends GenericMethods {
 		String Trip_type = prop.getProperty("Trip_type");
 		if (Trip_type.equalsIgnoreCase("RoundTrip")) {
 			btn_rounnd_Trip.click();
-			MakeExtentReport.logStatus("pass", "clicked on Round Trip");
+			ExtentReportGenerator.logStatus("pass", "clicked on " + Trip_type);
 			return status = true;
 		} else if (Trip_type.equalsIgnoreCase("OneWay")) {
 			btn_OneWayTrip.click();
-			MakeExtentReport.logStatus("pass", "clicked on OneWay");
+			ExtentReportGenerator.logStatus("pass", "clicked on " + Trip_type);
 			return status = true;
 		} else {
 			btn_MultiCity.click();
-			MakeExtentReport.logStatus("pass", "clicked on MultiCity");
+			ExtentReportGenerator.logStatus("pass", "clicked on " + Trip_type);
 			return status = true;
 		}
+
 	}
 	// **************************************************************************************************//
 	/*
@@ -147,14 +148,16 @@ public class HomePage extends GenericMethods {
 		boolean flag = false;
 		String FromCityName = prop.getProperty("From_City");
 		hoverAnElement(tbx_From_City);
-		//hoverAndSendkeys(tbx_From_City, FromCityName);
-		tbx_From_City.sendKeys(FromCityName,Keys.ENTER);
+		// hoverAndSendkeys(tbx_From_City, FromCityName);
+		tbx_From_City.sendKeys(FromCityName, Keys.ENTER);
+		ExtentReportGenerator.logStatus("pass", "Successfully entered the " + FromCityName);
+		
 		Explicitwait(10, txt_suggestion);
 
 		for (WebElement e : keys_Suggestions) {
 			if (e.getText().toUpperCase().contains(FromCityName.toUpperCase())) {
 				e.click();
-				MakeExtentReport.logStatus("pass", "Successfully entered the " + FromCityName);
+				ExtentReportGenerator.logStatus("pass", "selected the city from suggestions");
 				flag = true;
 				break;
 			}
@@ -176,13 +179,15 @@ public class HomePage extends GenericMethods {
 		String ToCityName = prop.getProperty("To_City");
 		hoverAnElement(tbx_To_City);
 		tbx_To_City.sendKeys(ToCityName, Keys.ENTER);
+		ExtentReportGenerator.logStatus("pass", "Successfully entered the " + ToCityName);
+		
 		Explicitwait(10, txt_suggestion);
 
 		for (WebElement e : keys_Suggestions) {
 
 			if (e.getText().toUpperCase().contains(ToCityName.toUpperCase())) {
 				e.click();
-				MakeExtentReport.logStatus("pass", "Successfully entered the " + ToCityName);
+				ExtentReportGenerator.logStatus("pass", "selected the city from suggestions");
 				flag = true;
 				break;
 			}
@@ -215,19 +220,24 @@ public class HomePage extends GenericMethods {
 
 		try {
 			Date_calender.click();
+			ExtentReportGenerator.logStatus("pass", "clicked on calender");
 			
 			// picking Departure date from calendar
 			WebElement deprt_date = driver.findElement(get_DynamicXpath(datePicker_xpath, jr_date));
 			if (deprt_date.isDisplayed()) {
 				hoverAndClick(deprt_date);
-				MakeExtentReport.logStatus("pass", "Successfully clicked on Departure Journey Date");
+				ExtentReportGenerator.logStatus("pass", 
+						"Successfully clicked on Departure Journey Date " + jr_date);
+				
 			}
 
 			// picking Return Journey date from calendar
 			WebElement return_jr_date = driver.findElement(get_DynamicXpath(datePicker_xpath, rn_date));
 			if (return_jr_date.isDisplayed()) {
 				hoverAndClick(return_jr_date);
-				MakeExtentReport.logStatus("pass", "Successfully clicked on Return Journey Date");
+				ExtentReportGenerator.logStatus("pass", 
+						"Successfully clicked on Departure Journey Date " + rn_date);
+				
 			}
 
 			StatusFlag = true;
@@ -247,8 +257,10 @@ public class HomePage extends GenericMethods {
 	// ***********************************************************************************************//
 	public FlightResultPage clickSearch() {
 		hoverAndClick(btn_search);
-		MakeExtentReport.logStatus("pass", "Successfully clicked onn search button");
+		ExtentReportGenerator.logStatus("pass", "Successfully clicked on search button");
+		
 		return new FlightResultPage();
+
 	}
 	// ****************************************************************************************************//
 }

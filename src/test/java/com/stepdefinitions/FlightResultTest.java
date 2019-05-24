@@ -15,8 +15,8 @@ import cucumber.api.java.en.Then;
 public class FlightResultTest extends GenericMethods {
 	public static HomePage home;
 	public static FlightResultPage flight;
-	boolean flag;
-	boolean status;
+	boolean flag=false;
+	boolean status=false;
 
 	@Given("^user is on home page$")
 	public void user_is_on_home_page() {
@@ -99,7 +99,7 @@ public class FlightResultTest extends GenericMethods {
 		}catch(Exception e){
 			e.printStackTrace();	
 			}
-	}
+		}
 
 	@Then("^user able to validate selected Departure Flight Name and Price which is shown Footer of the web page$")
 	public void user_able_to_validate_selected_Departure_Flight_Name_and_Price_which_is_shown_Footer_of_the_web_page() {
@@ -117,6 +117,9 @@ public class FlightResultTest extends GenericMethods {
 	
 	@Then("^user able to validate the total price excluding Discount  price if available$")
 	public void user_able_to_validate_the_total_price_excluding_Discount_price_if_available(){
-		Assert.assertTrue(flight.validateTotalprice());
+		
+		if(flag&&status){
+			Assert.assertTrue(flight.validateTotalprice());
+		}
 	}
 }
