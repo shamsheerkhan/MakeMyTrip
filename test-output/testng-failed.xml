@@ -9,15 +9,4 @@
       <class name="com.testrunner.FlightResultTestRunner"/>
     </classes>
   </test> <!-- MakeMyTrip-Challenge -->
-  <test name="MakeMyTrip-Challenge(failed)">
-    <classes>
-      <class name="com.testrunner.FlightResultTestRunner">
-        <methods>
-          <include name="setUpClass"/>
-          <include name="feature" invocation-numbers="0"/>
-          <include name="tearDownClass"/>
-        </methods>
-      </class> <!-- com.testrunner.FlightResultTestRunner -->
-    </classes>
-  </test> <!-- MakeMyTrip-Challenge(failed) -->
 </suite> <!-- Failed suite [Suite] -->

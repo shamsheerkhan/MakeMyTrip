@@ -139,10 +139,10 @@ public FlightResultPage(){
 		
 		e.printStackTrace();
 	}
-	System.out.println("The no. of departures flights with Non Stop filter are"+departure_Flight_count());
-	test.get().info("The no. of departures flights with Non Stop filter are"+departure_Flight_count());
-	System.out.println("The no. of Return flights with Non Stop filter are"+return_Flight_count());
-	test.get().info("The no. of Return flights with Non Stop filter are"+return_Flight_count());
+	System.out.println("The no. of departures flights with Non Stop filter are "+departure_Flight_count());
+	test.get().info("The no. of departures flights with Non Stop filter are "+departure_Flight_count());
+	System.out.println("The no. of Return flights with Non Stop filter are "+return_Flight_count());
+	test.get().info("The no. of Return flights with Non Stop filter are "+return_Flight_count());
 	
 	}
 	//**************************************************************************************************//
@@ -171,10 +171,10 @@ public FlightResultPage(){
 		
 		e.printStackTrace();
 	}
-	System.out.println("The no. of departures flights with One Stop filter are"+departure_Flight_count());
-	test.get().info("The no. of departures flights with One Stop filter are"+departure_Flight_count());
-	System.out.println("The no. of Return flights with One Stop filter are"+return_Flight_count());
-	test.get().info("The no. of Return flights with One Stop filter are"+return_Flight_count());
+	System.out.println("The no. of departures flights with One Stop filter are "+departure_Flight_count());
+	test.get().info("The no. of departures flights with One Stop filter are "+departure_Flight_count());
+	System.out.println("The no. of Return flights with One Stop filter are "+return_Flight_count());
+	test.get().info("The no. of Return flights with One Stop filter are "+return_Flight_count());
 	}
 	//**************************************************************************************************//
 	/*
@@ -248,7 +248,7 @@ public FlightResultPage(){
 	// *****************************************************************************************************//
 	public boolean select_DepartureFlight(int index) {
 		boolean flag=false;
-		if(departures_flights_list.size()>index&&index>0){
+		if(departures_flights_list.size()>=index&&index>0){
 		WebElement element = departures_flights_list.get(index);
 		toElement(element);
 		Departureflight_Details(element);
@@ -262,6 +262,7 @@ public FlightResultPage(){
 		}else{
 			ExtentReportGenerator.logStatus("skip", 
 					"Given " + index + " Index number is more than number of Departure flight listed or Negative value");
+			
 			Reporter.log("select flight from another departure date");
 			test.get().info("select flight from another departure date");
 			throw new SkipException(
@@ -313,7 +314,7 @@ public FlightResultPage(){
 	// *****************************************************************************************************//
 	public boolean select_ReturnFlight(int index) {
 		boolean flag=false;
-		if(Return_flights_list.size()>index&&index>0){
+		if(Return_flights_list.size()>=index&&index>0){
 		WebElement element = Return_flights_list.get(index);
 		toElement(element);
 		returnflight_Details(element);
@@ -327,8 +328,8 @@ public FlightResultPage(){
 		}else{
 			ExtentReportGenerator.logStatus("skip", 
 					"Given " + index + " Index number is more than number of Return flight listed or Negative value");
-			Reporter.log("select flight from another Return journey date");
-			test.get().info("select flight from another Return journey date");
+			ExtentReportGenerator.logStatus("log_pass", "select flight from another Return journey date");
+			
 			throw new SkipException(
 					"Given " + index + " Index number is more than number of Return flight listed or Negative value");		
 			}

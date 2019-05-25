@@ -24,7 +24,7 @@
     <div class="top-banner-root">
       <span class="top-banner-title-font">Test results</span>
       <br/>
-      <span class="top-banner-font-1">1 suite, 1 failed test</span>
+      <span class="top-banner-font-1">1 suite</span>
     </div> <!-- top-banner-root -->
     <div class="navigator-root">
       <div class="navigator-suite-header">
@@ -38,7 +38,7 @@
         <div class="rounded-window">
           <div class="suite-header light-rounded-window-top">
             <a href="#" class="navigator-link" panel-name="suite-Suite">
-              <span class="suite-name border-failed">Suite</span>
+              <span class="suite-name border-passed">Suite</span>
             </a> <!-- navigator-link -->
           </div> <!-- suite-header light-rounded-window-top -->
           <div class="navigator-suite-content">
@@ -91,21 +91,21 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">1 method, 1 failed,   </span>
+                    <span class="method-stats">1 method,   1 passed</span>
                   </li>
                   <li>
-                    <span class="method-list-title failed">Failed methods</span>
-                    <span class="show-or-hide-methods failed">
-                      <a href="#" panel-name="suite-Suite" class="hide-methods failed suite-Suite"> (hide)</a> <!-- hide-methods failed suite-Suite -->
-                      <a href="#" panel-name="suite-Suite" class="show-methods failed suite-Suite"> (show)</a> <!-- show-methods failed suite-Suite -->
+                    <span class="method-list-title passed">Passed methods</span>
+                    <span class="show-or-hide-methods passed">
+                      <a href="#" panel-name="suite-Suite" class="hide-methods passed suite-Suite"> (hide)</a> <!-- hide-methods passed suite-Suite -->
+                      <a href="#" panel-name="suite-Suite" class="show-methods passed suite-Suite"> (show)</a> <!-- show-methods passed suite-Suite -->
                     </span>
-                    <div class="method-list-content failed suite-Suite">
+                    <div class="method-list-content passed suite-Suite">
                       <span>
-                        <img width="3%" src="failed.png"/>
+                        <img width="3%" src="passed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="com.testrunner.FlightResultTestRunner" hash-for-method="feature(this feature is designed to test flight test results)">feature(this feature is designed to test flight test results)</a> <!-- method navigator-link -->
                       </span>
                       <br/>
-                    </div> <!-- method-list-content failed suite-Suite -->
+                    </div> <!-- method-list-content passed suite-Suite -->
                   </li>
                 </ul>
               </div> <!-- suite-section-content -->
@@ -117,9 +117,9 @@
     <div class="wrapper">
       <div class="main-panel-root">
         <div panel-name="suite-Suite" class="panel Suite">
-          <div class="suite-Suite-class-failed">
+          <div class="suite-Suite-class-passed">
             <div class="main-panel-header rounded-window-top">
-              <img src="failed.png"/>
+              <img src="passed.png"/>
               <span class="class-name">com.testrunner.FlightResultTestRunner</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
@@ -129,34 +129,12 @@
                   </a> <!-- feature(this feature is designed to test flight test results) -->
                   <span class="method-name">feature</span>
                   <span class="parameters">(this feature is designed to test flight test results)</span>
-                  <div class="stack-trace">cucumber.runtime.CucumberException: org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of all [] (tried for 5 second(s) with 500 milliseconds interval)
-Build info: version: &apos;3.14.0&apos;, revision: &apos;aacccce0&apos;, time: &apos;2018-08-02T20:19:58.91Z&apos;
-System info: host: &apos;DESKTOP-UKQTIHO&apos;, ip: &apos;192.168.0.126&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;x86&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_191&apos;
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 74.0.3729.6 (255758eccf3d24..., userDataDir: C:\Users\AAKHAN~1\AppData\L...}, cssSelectorsEnabled: true, databaseEnabled: false, goog:chromeOptions: {debuggerAddress: localhost:50595}, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, proxy: Proxy(), rotatable: false, setWindowRect: true, strictFileInteractability: false, takesHeapSnapshot: true, takesScreenshot: true, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unexpectedAlertBehaviour: ignore, unhandledPromptBehavior: ignore, version: 74.0.3729.169, webStorageEnabled: true}
-Session ID: 85e4960660270529754c3a7d093a5ac5
-	at cucumber.api.testng.TestNGCucumberRunner.runCucumber(TestNGCucumberRunner.java:69)
-	at cucumber.api.testng.AbstractTestNGCucumberTests.feature(AbstractTestNGCucumberTests.java:21)
-Caused by: org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of all [] (tried for 5 second(s) with 500 milliseconds interval)
-Build info: version: &apos;3.14.0&apos;, revision: &apos;aacccce0&apos;, time: &apos;2018-08-02T20:19:58.91Z&apos;
-System info: host: &apos;DESKTOP-UKQTIHO&apos;, ip: &apos;192.168.0.126&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;x86&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_191&apos;
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 74.0.3729.6 (255758eccf3d24..., userDataDir: C:\Users\AAKHAN~1\AppData\L...}, cssSelectorsEnabled: true, databaseEnabled: false, goog:chromeOptions: {debuggerAddress: localhost:50595}, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, proxy: Proxy(), rotatable: false, setWindowRect: true, strictFileInteractability: false, takesHeapSnapshot: true, takesScreenshot: true, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unexpectedAlertBehaviour: ignore, unhandledPromptBehavior: ignore, version: 74.0.3729.169, webStorageEnabled: true}
-Session ID: 85e4960660270529754c3a7d093a5ac5
-	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:113)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:283)
-	at com.Applicaion.Pages.FlightResultPage.departure_Flight_count(FlightResultPage.java:87)
-	at com.Applicaion.Pages.FlightResultPage.print_NonStop_flight_Records(FlightResultPage.java:142)
-	at com.stepdefinitions.FlightResultTest.user_select_the_Non_Stop_service_and_able_see_all_Departure_and_Return_flight_Records(FlightResultTest.java:67)
-	at ✽.Then user select the Non Stop service and able see all Departure and Return flight Records(D:/sw testing/MakeMyTrip/Features/flightResult.feature:11)
-... Removed 24 stack frames
-</div> <!-- stack-trace -->
                   <em>
 (Runs Cucumber Feature)                  </em>
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-Suite-class-failed -->
+          </div> <!-- suite-Suite-class-passed -->
         </div> <!-- panel Suite -->
         <div panel-name="test-xml-Suite" class="panel">
           <div class="main-panel-header rounded-window-top">
@@ -224,7 +202,7 @@ data.addRows(1);
 data.setCell(0, 0, 0)
 data.setCell(0, 1, 'feature')
 data.setCell(0, 2, 'com.testrunner.FlightResultTestRunner')
-data.setCell(0, 3, 69085);
+data.setCell(0, 3, 90086);
 window.suiteTableData['Suite']= { tableData: data, tableDiv: 'times-div-Suite'}
 return data;
 }
@@ -248,35 +226,29 @@ return data;
                 <span class="reporter-method-output">https://www.makemytrip.com Opened</span>
                 <span class="reporter-method-output">Successfully user is on home page</span>
                 <span class="reporter-method-output">clicked on Tab Menu Flights</span>
-                <span class="reporter-method-output">clicked on RoundTrip</span>
+                <span class="reporter-method-output">clicked on Round Trip</span>
                 <span class="reporter-method-output">Successfully entered the Delhi</span>
                 <span class="reporter-method-output">selected the city from suggestions</span>
                 <span class="reporter-method-output">Successfully entered the Bangalore</span>
                 <span class="reporter-method-output">selected the city from suggestions</span>
                 <span class="reporter-method-output">clicked on calender</span>
-                <span class="reporter-method-output">Successfully clicked on Departure Journey Date Fri May 24 2019</span>
-                <span class="reporter-method-output">Successfully clicked on Departure Journey Date Fri May 31 2019</span>
+                <span class="reporter-method-output">Successfully clicked on Departure Journey Date Sat May 25 2019</span>
+                <span class="reporter-method-output">Successfully clicked on Departure Journey Date Sat Jun 01 2019</span>
                 <span class="reporter-method-output">Successfully clicked on search button</span>
-                <span class="reporter-method-output">Given 1 Index number is more than number of Departure flight listed or Negative value</span>
-                <span class="reporter-method-output">select flight from another departure date</span>
+                <span class="reporter-method-output">clicked on Departure flight having index 1</span>
                 <span class="reporter-method-output">clicked on Return flight having index 1</span>
                 <span class="reporter-method-output">Given 23 Index number is more than number of Departure flight listed or Negative value</span>
                 <span class="reporter-method-output">select flight from another departure date</span>
                 <span class="reporter-method-output">clicked on Return flight having index 45</span>
-                <span class="reporter-method-output">Given 12 Index number is more than number of Departure flight listed or Negative value</span>
-                <span class="reporter-method-output">select flight from another departure date</span>
+                <span class="reporter-method-output">clicked on Departure flight having index 12</span>
                 <span class="reporter-method-output">clicked on Return flight having index 16</span>
-                <span class="reporter-method-output">Given 5 Index number is more than number of Departure flight listed or Negative value</span>
-                <span class="reporter-method-output">select flight from another departure date</span>
+                <span class="reporter-method-output">clicked on Departure flight having index 5</span>
                 <span class="reporter-method-output">clicked on Return flight having index 31</span>
-                <span class="reporter-method-output">Given 4 Index number is more than number of Departure flight listed or Negative value</span>
-                <span class="reporter-method-output">select flight from another departure date</span>
+                <span class="reporter-method-output">clicked on Departure flight having index 4</span>
                 <span class="reporter-method-output">clicked on Return flight having index 3</span>
-                <span class="reporter-method-output">Given 10 Index number is more than number of Departure flight listed or Negative value</span>
-                <span class="reporter-method-output">select flight from another departure date</span>
+                <span class="reporter-method-output">clicked on Departure flight having index 10</span>
                 <span class="reporter-method-output">clicked on Return flight having index 23</span>
-                <span class="reporter-method-output">Given 8 Index number is more than number of Departure flight listed or Negative value</span>
-                <span class="reporter-method-output">select flight from another departure date</span>
+                <span class="reporter-method-output">clicked on Departure flight having index 8</span>
                 <span class="reporter-method-output">clicked on Return flight having index 3</span>
               </div> <!-- reporter-method-output-div -->
             </div> <!-- reporter-method-div -->
@@ -301,14 +273,12 @@ return data;
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-class before -->
               <div class="test-method">
-                <img src="failed.png">
-                </img>
                 <span class="method-name">feature(this feature is designed to test flight test results)</span>
-                <span class="method-start">964 ms</span>
+                <span class="method-start">891 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-class after">
                 <span class="method-name">tearDownClass</span>
-                <span class="method-start">70545 ms</span>
+                <span class="method-start">91496 ms</span>
               </div> <!-- configuration-class after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

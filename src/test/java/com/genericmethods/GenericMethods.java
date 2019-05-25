@@ -137,8 +137,9 @@ public class GenericMethods {
 		try {
 			// Wait till the WebElement is Displayed
 			Explicitwait(5, element);
+			js = ((JavascriptExecutor) driver);
 			Actions act = new Actions(driver);
-			act.moveToElement(element).perform();
+			act.moveToElement(element).build().perform();
 
 			js.executeScript("arguments[0].value='" + keys + "';", element);
 
@@ -166,7 +167,7 @@ public class GenericMethods {
 		String browser = prop.getProperty("browsername");
 		String headless = prop.getProperty("HeadlessMode");
 		String imageDisable = prop.getProperty("DisableImage");
-		String browsername = prop.getProperty("browsername");
+		
 		String url = prop.getProperty("URL");
 		if (browser.equalsIgnoreCase("chrome") || browser.toUpperCase().contains("CHROME")) {
 			try {
@@ -174,6 +175,9 @@ public class GenericMethods {
 				System.setProperty("webdriver.chrome.driver", getPath(browser));
 				ChromeOptions options = new ChromeOptions();
 				options.addArguments("--incognito");
+				options.addArguments("--start-maximized");
+				options.addArguments("--disable-web-security");
+				options.addArguments("--no-proxy-server");
 
 				if (imageDisable.equalsIgnoreCase("yes")) {
 					cH_disableImg(options);
@@ -500,7 +504,7 @@ public class GenericMethods {
 	// ********************************************************************************//
 	public static void verifyElementText(String exp_text, WebElement element) {
 		Explicitwait(5, element);
-		js = ((JavascriptExecutor) driver);
+		js = ((JavascriptExecutor) driver);	
 		for (int i = 0; i <= 3; i++) {
 			js.executeScript("arguments[0].style.border='2px solid red'", element);
 		}
@@ -530,7 +534,7 @@ public class GenericMethods {
 		boolean flag = false;
 		try {
 			Explicitwait(5, element);
-			js = ((JavascriptExecutor) driver);
+			js = ((JavascriptExecutor) driver);		
 			for (int i = 0; i <= 3; i++) {
 				js.executeScript("arguments[0].style.border='2px solid red'", element);
 			}
@@ -696,7 +700,7 @@ public class GenericMethods {
 	public static void toBottomOfPage() {
 		try {
 			long Height = Long.parseLong(js.executeScript("return document.body.scrollHeight").toString());
-
+			js = ((JavascriptExecutor) driver);
 			while (true) {
 				js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
@@ -726,7 +730,7 @@ public class GenericMethods {
 	// ***************************************************************************************//
 
 	public static void toUP() {
-
+		js = ((JavascriptExecutor) driver);
 		js.executeScript("window.scrollTo(document.body.scrollHeight,0);");
 
 	}
@@ -746,6 +750,7 @@ public class GenericMethods {
 	// ************************************************************************************************************//
 
 	public static void toElement(WebElement element) {
+		js = ((JavascriptExecutor) driver);
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 	// ****************************************************************************************************************//
