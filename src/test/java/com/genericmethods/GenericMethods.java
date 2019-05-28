@@ -29,6 +29,7 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -45,6 +46,7 @@ import utils.ExtentReportGenerator;
 public class GenericMethods {
 	public static WebDriver driver;
 	public static ChromeOptions options;
+	public static FirefoxProfile profile;
 	public static Properties prop = new Properties();
 	static FileInputStream ip;
 	public static JavascriptExecutor js;
@@ -173,6 +175,7 @@ public class GenericMethods {
 			try {
 
 				System.setProperty("webdriver.chrome.driver", getPath(browser));
+				DesiredCapabilities capabilites = DesiredCapabilities.chrome();
 				ChromeOptions options = new ChromeOptions();
 				options.addArguments("--incognito");
 				options.addArguments("--start-maximized");
@@ -189,7 +192,7 @@ public class GenericMethods {
 					ExtentReportGenerator.logStatus("log_pass", "chrome browser opened in Headless mode");
 
 				}
-				DesiredCapabilities capabilites = DesiredCapabilities.chrome();
+				
 				capabilites.setCapability(ChromeOptions.CAPABILITY, options);
 				driver = new ChromeDriver(options);
 				ExtentReportGenerator.logStatus("log_pass", "Chrome drive launched with headless mode = "
@@ -204,14 +207,21 @@ public class GenericMethods {
 			try {
 
 				System.setProperty("webdriver.gecko.driver", getPath(browser));
+				DesiredCapabilities capabilities=DesiredCapabilities.firefox();
+				capabilities.setCapability("marionette", true);
 				FirefoxOptions FFoptions = new FirefoxOptions();
+				FFoptions.merge(capabilities);
+				profile= new FirefoxProfile();
+				profile.setPreference("browser.privatebrowsing.autostart", true);
+				
 				if (imageDisable.equalsIgnoreCase("yes")) {
-					fF_disableImg(FFoptions);
+					fF_disableImg(profile);
 				}
 				if (headless.equalsIgnoreCase("yes")) {
 					fF_headless(FFoptions);
 				}
-
+				FFoptions.setProfile(profile);
+				FFoptions.setCapability(FirefoxDriver.PROFILE, profile);
 				driver = new FirefoxDriver(FFoptions);
 				ExtentReportGenerator.logStatus("log_pass", "FF drive launched with headless mode = "
 						+ headless.toUpperCase() + ", Image Disable mode = " + imageDisable.toUpperCase());
@@ -637,11 +647,10 @@ public class GenericMethods {
 	 */
 	// ***************************************************************************************//
 
-	public static void fF_disableImg(FirefoxOptions options) {
-		FirefoxProfile profile = new FirefoxProfile();
+	public static void fF_disableImg(FirefoxProfile profile) {
+		 
 		profile.setPreference("permissions.default.image", 2);
-		options.setProfile(profile);
-		options.setCapability(FirefoxDriver.PROFILE, profile);
+		
 	}
 	// ****************************************************************************************************//
 	// Configures chrome to run in headless mode
@@ -698,9 +707,12 @@ public class GenericMethods {
 	// ***************************************************************************************//
 
 	public static void toBottomOfPage() {
+		
 		try {
-			long Height = Long.parseLong(js.executeScript("return document.body.scrollHeight").toString());
 			js = ((JavascriptExecutor) driver);
+		
+			long Height = Long.parseLong(js.executeScript("return document.body.scrollHeight").toString());
+			
 			while (true) {
 				js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
@@ -710,9 +722,20 @@ public class GenericMethods {
 				}
 				Height = newHeight;
 			}
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Actions action = new Actions(driver);
+			action.keyDown(Keys.CONTROL).sendKeys(Keys.PAGE_DOWN).perform();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				
+				e1.printStackTrace();
+			}
+			
 		}
+		
+		
 	}
 	// ****************************************************************************************************************//
 	// Scrolls to top of page
@@ -730,8 +753,22 @@ public class GenericMethods {
 	// ***************************************************************************************//
 
 	public static void toUP() {
-		js = ((JavascriptExecutor) driver);
-		js.executeScript("window.scrollTo(document.body.scrollHeight,0);");
+		
+		try{
+			js = ((JavascriptExecutor) driver);
+			js.executeScript("window.scrollTo(document.body.scrollHeight,0);");
+			
+		}catch(Exception e){
+			Actions action = new Actions(driver);
+			action.keyDown(Keys.CONTROL).sendKeys(Keys.PAGE_UP).build().perform();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				
+				e1.printStackTrace();
+			}
+		}
+		
 
 	}
 	// ****************************************************************************************************************//
@@ -771,10 +808,14 @@ public class GenericMethods {
 
 		if (s.contains("Rs")) {
 			s = s.substring(3, s.length());
+		}else {
+			s = s.substring(2, s.length());
 		}
 		try {
-			s = s.replaceAll(",", ""); // remove commas
-		} catch (Exception e) {
+			if(s.contains(",")){
+			s = s.replaceAll(",", "");	// remove commas
+		}
+			} catch (Exception e) {
 
 		}
 

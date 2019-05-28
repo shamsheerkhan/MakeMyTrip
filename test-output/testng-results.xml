@@ -2,7 +2,10 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
     <line>
-      <![CDATA[Chrome drive launched with headless mode = NO, Image Disable mode = NO]]>
+      <![CDATA[chrome browser opened in Disable mode]]>
+    </line>
+    <line>
+      <![CDATA[Chrome drive launched with headless mode = NO, Image Disable mode = YES]]>
     </line>
     <line>
       <![CDATA[chrome Maximized]]>
@@ -35,10 +38,10 @@
       <![CDATA[clicked on calender]]>
     </line>
     <line>
-      <![CDATA[Successfully clicked on Departure Journey Date Sat May 25 2019]]>
+      <![CDATA[Successfully clicked on Departure Journey Date Tue May 28 2019]]>
     </line>
     <line>
-      <![CDATA[Successfully clicked on Departure Journey Date Sat Jun 01 2019]]>
+      <![CDATA[Successfully clicked on Departure Journey Date Tue Jun 04 2019]]>
     </line>
     <line>
       <![CDATA[Successfully clicked on search button]]>
@@ -89,19 +92,19 @@
       <![CDATA[clicked on Return flight having index 3]]>
     </line>
   </reporter-output>
-  <suite name="Suite" duration-ms="91530" started-at="2019-05-25T09:53:14Z" finished-at="2019-05-25T09:54:46Z">
+  <suite name="Suite" duration-ms="85444" started-at="2019-05-28T07:06:34Z" finished-at="2019-05-28T07:08:00Z">
     <groups>
       <group name="cucumber">
         <method signature="AbstractTestNGCucumberTests.feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="feature" class="cucumber.api.testng.AbstractTestNGCucumberTests"/>
       </group> <!-- cucumber -->
     </groups>
-    <test name="MakeMyTrip-Challenge" duration-ms="91530" started-at="2019-05-25T09:53:14Z" finished-at="2019-05-25T09:54:46Z">
+    <test name="MakeMyTrip-Challenge" duration-ms="85444" started-at="2019-05-28T07:06:34Z" finished-at="2019-05-28T07:08:00Z">
       <class name="com.testrunner.FlightResultTestRunner">
-        <test-method status="PASS" signature="setUpClass()[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="setUpClass" is-config="true" duration-ms="683" started-at="2019-05-25T15:23:14Z" finished-at="2019-05-25T15:23:15Z">
+        <test-method status="PASS" signature="setUpClass()[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="setUpClass" is-config="true" duration-ms="672" started-at="2019-05-28T12:36:34Z" finished-at="2019-05-28T12:36:35Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUpClass -->
-        <test-method status="PASS" signature="feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="feature" duration-ms="90086" started-at="2019-05-25T15:23:15Z" description="Runs Cucumber Feature" data-provider="features" finished-at="2019-05-25T15:24:45Z">
+        <test-method status="PASS" signature="feature(cucumber.api.testng.CucumberFeatureWrapper)[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="feature" duration-ms="84083" started-at="2019-05-28T12:36:35Z" description="Runs Cucumber Feature" data-provider="features" finished-at="2019-05-28T12:37:59Z">
           <params>
             <param index="0">
               <value>
@@ -111,7 +114,10 @@
           </params>
           <reporter-output>
             <line>
-              <![CDATA[Chrome drive launched with headless mode = NO, Image Disable mode = NO]]>
+              <![CDATA[chrome browser opened in Disable mode]]>
+            </line>
+            <line>
+              <![CDATA[Chrome drive launched with headless mode = NO, Image Disable mode = YES]]>
             </line>
             <line>
               <![CDATA[chrome Maximized]]>
@@ -144,10 +150,10 @@
               <![CDATA[clicked on calender]]>
             </line>
             <line>
-              <![CDATA[Successfully clicked on Departure Journey Date Sat May 25 2019]]>
+              <![CDATA[Successfully clicked on Departure Journey Date Tue May 28 2019]]>
             </line>
             <line>
-              <![CDATA[Successfully clicked on Departure Journey Date Sat Jun 01 2019]]>
+              <![CDATA[Successfully clicked on Departure Journey Date Tue Jun 04 2019]]>
             </line>
             <line>
               <![CDATA[Successfully clicked on search button]]>
@@ -199,7 +205,7 @@
             </line>
           </reporter-output>
         </test-method> <!-- feature -->
-        <test-method status="PASS" signature="tearDownClass()[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="tearDownClass" is-config="true" duration-ms="6" started-at="2019-05-25T15:24:46Z" finished-at="2019-05-25T15:24:46Z">
+        <test-method status="PASS" signature="tearDownClass()[pri:0, instance:com.testrunner.FlightResultTestRunner@7f6b8c]" name="tearDownClass" is-config="true" duration-ms="5" started-at="2019-05-28T12:38:00Z" finished-at="2019-05-28T12:38:00Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->

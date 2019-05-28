@@ -40,12 +40,13 @@ public class HomePage extends GenericMethods {
 	@FindBy(how = How.XPATH, using = "(//div[@id='root']/div/div[2]//ul)[1]/li")
 	public List<WebElement> keys_TripType;
 
-	@FindBy(how = How.XPATH, using = "//input[@id='fromCity']")
+	@FindBy(how = How.XPATH, using = "//input[@id='fromCity'and@type='text']")
 	public WebElement tbx_From_City;
 
-	@FindBy(how = How.XPATH, using = "(//input[@type='text'])[3]")
+	@FindBy(how = How.XPATH, using = "//input[@id='toCity'and@type='text']")
 	public WebElement tbx_To_City;
-
+	@FindBy(how = How.XPATH, using = "//div[@role='combobox']/input")
+	public WebElement tbx_inpuut;
 	@FindBy(how = How.XPATH, using = "//p[text()='SUGGESTIONS ']")
 	public WebElement txt_suggestion;
 
@@ -135,10 +136,8 @@ public class HomePage extends GenericMethods {
 
 		boolean flag = false;
 		String FromCityName = prop.getProperty("From_City");
-		hoverAnElement(tbx_From_City);
-		// hoverAndSendkeys(tbx_From_City, FromCityName);
-		// tbx_From_City.sendKeys(Keys.ENTER);
-		tbx_From_City.sendKeys(FromCityName, Keys.ENTER);
+		tbx_From_City.click();
+		tbx_inpuut.sendKeys(FromCityName);
 		ExtentReportGenerator.logStatus("pass", "Successfully entered the " + FromCityName);
 
 		Explicitwait(10, txt_suggestion);
@@ -159,16 +158,19 @@ public class HomePage extends GenericMethods {
 
 	// **************************************************************************************************//
 	/*
-	 * Method Name :=enterToCity Input_Parameters := NA OutPut_Parameters:= NA
-	 * Designer := SHAMSHEER KHAN Sprint := #
+	 * Method Name :=enterToCity 
+	 * Input_Parameters := NA 
+	 * OutPut_Parameters:= NA
+	 * Designer := SHAMSHEER KHAN 
+	 * Sprint := #
 	 */
 	// ***********************************************************************************************//
 	public boolean EnterToCity() {
 
 		boolean flag = false;
 		String ToCityName = prop.getProperty("To_City");
-		hoverAnElement(tbx_To_City);
-		tbx_To_City.sendKeys(ToCityName, Keys.ENTER);
+		
+		tbx_inpuut.sendKeys(ToCityName);
 		ExtentReportGenerator.logStatus("pass", "Successfully entered the " + ToCityName);
 
 		Explicitwait(10, txt_suggestion);

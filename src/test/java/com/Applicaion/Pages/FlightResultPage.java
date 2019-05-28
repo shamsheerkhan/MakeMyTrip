@@ -43,7 +43,7 @@ public class FlightResultPage extends GenericMethods{
 	@FindBy(how=How.XPATH,using="//p[contains(text(),'discount')]")
 	public  WebElement txt_discount;
 	
-	@FindBy(how=How.XPATH,using="//span[@class='splitVw-total-fare']/span")
+	@FindBy(how=How.XPATH,using="//div[@id='rt-domrt-jrny']/following-sibling::div/div/div/div/div[3]//p")
 	public  WebElement txt_totalfare;
 	public String departureFlight_Name;
 
@@ -73,6 +73,7 @@ public FlightResultPage(){
 	public void print_flight_Records() {
 
 		System.out.println("***************The No of flights after without any filters***************");
+	
 		toBottomOfPage();
 		toUP();
 		System.out.println("The no. of departures flights are " + departure_Flight_count());
@@ -162,7 +163,9 @@ public FlightResultPage(){
 	public void print_1Stop_flight_Records() {
 	System.out.println("**************The no. of flights with One Stop filter***************");
 	hoverAndClick(btn_Reset);
+	
 	hoverAndClick(btn_1Stop);
+	
 	toBottomOfPage();
 	toUP();
 	try {
